@@ -13,7 +13,7 @@ export const Onboarding_3 = ({navigation}: {navigation: any}) => {
       }}>
       <Text>Onboarding 3</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate('Onboarding_3')}
+        onPress={() => navigation.navigate('Onboarding_1')}
         style={_styles.button}>
         <Text>Next</Text>
       </TouchableOpacity>

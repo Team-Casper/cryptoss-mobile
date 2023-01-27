@@ -5,9 +5,9 @@ import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 
 function App(): JSX.Element {
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
       <RootNavigator />
-    </SafeAreaView>
+    </>
   );
 
   /*
