@@ -3,6 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
 import {Text, View} from 'react-native';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {OnboardingNavigator} from './authentication/onboarding';
 
 const Stack = createNativeStackNavigator();
 
@@ -10,20 +11,6 @@ function HomeScreen() {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
-    </View>
-  );
-}
-
-function OnboardingNavigator() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'pink',
-      }}>
-      <Text style={{color: 'black'}}>Onboarding Screen</Text>
     </View>
   );
 }
