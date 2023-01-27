@@ -106,7 +106,7 @@ const _styles = StyleSheet.create({
     flexDirection: 'row',
   },
   footerButtonTextStyle: {
-    fontFamily: 'Inter',
+    //fontFamily: 'Inter',
     fontStyle: 'normal',
     fontWeight: '700',
     fontSize: 16 * height,

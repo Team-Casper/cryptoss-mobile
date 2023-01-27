@@ -5,6 +5,7 @@ import {height, width} from '@utils/globalConfig';
 import {WithLocalSvg} from 'react-native-svg';
 import {BottomSheet} from '@screens/common/BottomSheet';
 import {PermissionRequestContent} from '@assets/index';
+import {_globalStyles} from '@screens/styles';
 
 export const Onboarding_1 = ({navigation}: {navigation: any}) => {
   const [showModal, setShowModal] = useState(false);
@@ -21,7 +22,8 @@ export const Onboarding_1 = ({navigation}: {navigation: any}) => {
         </View>
         <OneButtonFooter
           containerStyle={{
-            marginTop: 15 * height,
+            position: 'absolute',
+            bottom: 15 * height,
           }}
           onPress={() => navigation.navigate('Onboarding_2')}
           buttonText={'계속하기'}
@@ -31,15 +33,16 @@ export const Onboarding_1 = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View style={_styles.outerContainerStyle}>
+    <View style={_globalStyles.outerContainerStyle}>
       <View style={{height: 260 * height}}>
-        <Text style={[_styles.mainText, {marginBottom: 17 * height}]}>
+        <Text style={[_globalStyles.mainText, {marginBottom: 17 * height}]}>
           크립토의 모든 것{'\n'}크립토스에서 쉽고 간편하게
         </Text>
-        <Text style={_styles.subText}>
-          크립토스는 완전한 <Text style={_styles.highlightText}>탈중앙</Text>{' '}
-          지갑입니다{'\n'}
-          <Text style={_styles.highlightText}>전화번호</Text>만으로 쉽고
+        <Text style={_globalStyles.subText}>
+          크립토스는 완전한{' '}
+          <Text style={_globalStyles.highlightText}>탈중앙</Text> 지갑입니다
+          {'\n'}
+          <Text style={_globalStyles.highlightText}>전화번호</Text>만으로 쉽고
           간편하게 가상자산을 주고 받으세요
         </Text>
       </View>
@@ -73,34 +76,6 @@ export const Onboarding_1 = ({navigation}: {navigation: any}) => {
 };
 
 const _styles = StyleSheet.create({
-  outerContainerStyle: {
-    flex: 1,
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mainText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '700',
-    fontSize: 24 * height,
-    lineHeight: 32 * height,
-    textAlign: 'center',
-    color: '#000000',
-  },
-  subText: {
-    fontFamily: 'Inter',
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 14 * height,
-    lineHeight: 22 * height,
-    textAlign: 'center',
-    color: '#828282',
-  },
-  highlightText: {
-    fontWeight: '700',
-    color: '#2ED8A7',
-  },
   modalContainerStyle: {
     width: 360 * width,
     height: 455 * height,

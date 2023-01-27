@@ -32,12 +32,7 @@ const _BottomSheet = (props: bottomSheetProps) => {
     <View
       style={{
         position: 'absolute',
-        marginTop:
-          height * -812 +
-          insets.bottom +
-          (bottomSheetStyleProps.bottomSheetHeight
-            ? bottomSheetStyleProps.bottomSheetHeight * height
-            : 0),
+        top: 0,
       }}>
       <View
         style={[
