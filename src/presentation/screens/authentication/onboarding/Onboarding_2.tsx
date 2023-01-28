@@ -10,7 +10,7 @@ import {
 import {_globalStyles} from '@screens/styles';
 import {height, width} from '@utils/index';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
-import {BottomSheet} from '@screens/common/BottomSheet';
+import {BottomSheet, HideKeyboard} from '@screens/common';
 import Icon_Close from '@assets/icons/icon_close.svg';
 
 const colors = {
@@ -94,135 +94,137 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   };
 
   return (
-    <View
-      style={[
-        _globalStyles.outerContainerStyle,
-        {
-          justifyContent: 'flex-start',
-          alignItems: 'flex-start',
-          paddingTop: 83 * height,
-          paddingHorizontal: 20 * height,
-        },
-      ]}>
-      <Text style={_globalStyles.mainText}>사용자 정보를</Text>
-      <Text style={_globalStyles.mainText}>입력해주세요</Text>
-      <View style={{marginTop: 24 * height}}>
-        <Text
-          style={[
-            _styles.textInputTitleText,
-            {
-              color:
-                focusedInputIdx === 0
-                  ? colors.focusedTextColor
-                  : colors.blurredTextColor,
-            },
-          ]}>
-          닉네임
-        </Text>
-        <TextInput
-          style={[
-            _styles.textInputStyle,
-            {
-              borderColor:
-                focusedInputIdx === 0
-                  ? colors.focusedBorderColor
-                  : colors.blurredBorderColor,
-            },
-          ]}
-          onFocus={() => setFocusedInputIdx(0)}
-          onBlur={() => setFocusedInputIdx(-1)}
-          onChangeText={setNickName}
-          value={nickName}
-          placeholder={'닉네임'}
-        />
-        <Text
-          style={[
-            _styles.textInputTitleText,
-            {
-              color:
-                focusedInputIdx === 1
-                  ? colors.focusedTextColor
-                  : colors.blurredTextColor,
-            },
-          ]}>
-          통신사
-        </Text>
-        <TextInput
-          style={[
-            _styles.textInputStyle,
-            {
-              borderColor:
-                focusedInputIdx === 1
-                  ? colors.focusedBorderColor
-                  : colors.blurredBorderColor,
-            },
-          ]}
-          value={mobileCarrier}
-          editable={false}
-          placeholder={'통신사'}
-          onTouchStart={() => {
-            setFocusedInputIdx(1);
-            Keyboard.dismiss();
-            setShowOptionModal(true);
+    <HideKeyboard>
+      <View
+        style={[
+          _globalStyles.outerContainerStyle,
+          {
+            justifyContent: 'flex-start',
+            alignItems: 'flex-start',
+            paddingTop: 83 * height,
+            paddingHorizontal: 20 * height,
+          },
+        ]}>
+        <Text style={_globalStyles.mainText}>사용자 정보를</Text>
+        <Text style={_globalStyles.mainText}>입력해주세요</Text>
+        <View style={{marginTop: 24 * height}}>
+          <Text
+            style={[
+              _styles.textInputTitleText,
+              {
+                color:
+                  focusedInputIdx === 0
+                    ? colors.focusedTextColor
+                    : colors.blurredTextColor,
+              },
+            ]}>
+            닉네임
+          </Text>
+          <TextInput
+            style={[
+              _styles.textInputStyle,
+              {
+                borderColor:
+                  focusedInputIdx === 0
+                    ? colors.focusedBorderColor
+                    : colors.blurredBorderColor,
+              },
+            ]}
+            onFocus={() => setFocusedInputIdx(0)}
+            onBlur={() => setFocusedInputIdx(-1)}
+            onChangeText={setNickName}
+            value={nickName}
+            placeholder={'닉네임'}
+          />
+          <Text
+            style={[
+              _styles.textInputTitleText,
+              {
+                color:
+                  focusedInputIdx === 1
+                    ? colors.focusedTextColor
+                    : colors.blurredTextColor,
+              },
+            ]}>
+            통신사
+          </Text>
+          <TextInput
+            style={[
+              _styles.textInputStyle,
+              {
+                borderColor:
+                  focusedInputIdx === 1
+                    ? colors.focusedBorderColor
+                    : colors.blurredBorderColor,
+              },
+            ]}
+            value={mobileCarrier}
+            editable={false}
+            placeholder={'통신사'}
+            onTouchStart={() => {
+              setFocusedInputIdx(1);
+              Keyboard.dismiss();
+              setShowOptionModal(true);
+            }}
+          />
+          <Text
+            style={[
+              _styles.textInputTitleText,
+              {
+                color:
+                  focusedInputIdx === 2
+                    ? colors.focusedTextColor
+                    : colors.blurredTextColor,
+              },
+            ]}>
+            휴대폰번호
+          </Text>
+          <TextInput
+            style={[
+              _styles.textInputStyle,
+              {
+                borderColor:
+                  focusedInputIdx === 2
+                    ? colors.focusedBorderColor
+                    : colors.blurredBorderColor,
+              },
+            ]}
+            onFocus={() => setFocusedInputIdx(2)}
+            onBlur={() => setFocusedInputIdx(-1)}
+            onChangeText={setPhoneNumber}
+            value={phoneNumber}
+            placeholder={'010-****-****'}
+            keyboardType={'phone-pad'}
+            maxLength={11}
+          />
+        </View>
+        <OneButtonFooter
+          containerStyle={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 35 * height,
           }}
+          onPress={() => navigation.navigate('Onboarding_3')}
+          buttonText={'확인'}
         />
-        <Text
-          style={[
-            _styles.textInputTitleText,
-            {
-              color:
-                focusedInputIdx === 2
-                  ? colors.focusedTextColor
-                  : colors.blurredTextColor,
-            },
-          ]}>
-          휴대폰번호
-        </Text>
-        <TextInput
-          style={[
-            _styles.textInputStyle,
-            {
-              borderColor:
-                focusedInputIdx === 2
-                  ? colors.focusedBorderColor
-                  : colors.blurredBorderColor,
-            },
-          ]}
-          onFocus={() => setFocusedInputIdx(2)}
-          onBlur={() => setFocusedInputIdx(-1)}
-          onChangeText={setPhoneNumber}
-          value={phoneNumber}
-          placeholder={'010-****-****'}
-          keyboardType={'phone-pad'}
-          maxLength={11}
-        />
+        {showOptionModal && (
+          <BottomSheet
+            setBottomSheetState={setShowOptionModal}
+            bottomSheetStyleProps={{
+              dim: true,
+              containerStyle: {
+                borderTopRightRadius: 20 * height,
+                borderTopLeftRadius: 20 * height,
+              },
+              bottomSheetHeight: 520 * height,
+              bottomSheetWidth: 375 * width,
+            }}
+            bottomSheetContent={modalContent}
+          />
+        )}
       </View>
-      <OneButtonFooter
-        containerStyle={{
-          position: 'absolute',
-          left: 0,
-          right: 0,
-          bottom: 35 * height,
-        }}
-        onPress={() => navigation.navigate('Onboarding_3')}
-        buttonText={'확인'}
-      />
-      {showOptionModal && (
-        <BottomSheet
-          setBottomSheetState={setShowOptionModal}
-          bottomSheetStyleProps={{
-            dim: true,
-            containerStyle: {
-              borderTopRightRadius: 20 * height,
-              borderTopLeftRadius: 20 * height,
-            },
-            bottomSheetHeight: 520 * height,
-            bottomSheetWidth: 375 * width,
-          }}
-          bottomSheetContent={modalContent}
-        />
-      )}
-    </View>
+    </HideKeyboard>
   );
 };
 
