@@ -11,6 +11,7 @@ import {_globalStyles} from '@screens/styles';
 import {height, width} from '@utils/index';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {BottomSheet} from '@screens/common/BottomSheet';
+import Icon_Close from '@assets/icons/icon_close.svg';
 
 const colors = {
   focusedTextColor: '#4CB6C4',
@@ -40,12 +41,26 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const chooseMobileCarrierOption = (idx: number) => {
     setChosenMobileCarrierIdx(idx);
     setMobileCarrier(mobileCarrierList[idx]);
-    setTimeout(() => setShowOptionModal(false), 300); // 0.3초 후에 모달 닫힘
   };
 
   const modalContent = () => {
     return (
       <View style={_styles.modalContainerStyle}>
+        <TouchableOpacity
+          onPress={() => setShowOptionModal(false)}
+          style={{
+            width: '100%',
+            height: 55 * height,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <Icon_Close
+            width={30 * height}
+            height={30 * height}
+            fillOpacity={0.2}
+          />
+        </TouchableOpacity>
         <Text style={_styles.modalTitleText}>통신사 선택</Text>
         {mobileCarrierList.map((val: string, idx) => (
           <TouchableOpacity
@@ -144,6 +159,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           ]}
           value={mobileCarrier}
           editable={false}
+          placeholder={'통신사'}
           onTouchStart={() => {
             setFocusedInputIdx(1);
             Keyboard.dismiss();
@@ -176,6 +192,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           onBlur={() => setFocusedInputIdx(-1)}
           onChangeText={setPhoneNumber}
           value={phoneNumber}
+          placeholder={'010-****-****'}
           keyboardType={'phone-pad'}
           maxLength={11}
         />
@@ -258,7 +275,6 @@ const _styles = StyleSheet.create({
     borderTopRightRadius: 20 * height,
     borderTopLeftRadius: 20 * height,
     paddingHorizontal: 20 * width,
-    paddingTop: 30 * height,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',

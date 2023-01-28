@@ -4,7 +4,7 @@ import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {height, width} from '@utils/globalConfig';
 import {WithLocalSvg} from 'react-native-svg';
 import {BottomSheet} from '@screens/common/BottomSheet';
-import {PermissionRequestContent} from '@assets/index';
+import PermissionRequestContent from '@assets/images/permission_request_content.svg';
 import {_globalStyles} from '@screens/styles';
 
 export const Onboarding_1 = ({navigation}: {navigation: any}) => {
@@ -14,10 +14,9 @@ export const Onboarding_1 = ({navigation}: {navigation: any}) => {
     return (
       <View style={_styles.modalContainerStyle}>
         <View style={{marginLeft: 8 * height}}>
-          <WithLocalSvg
+          <PermissionRequestContent
             height={333 * height}
             width={360 * height}
-            asset={PermissionRequestContent}
           />
         </View>
         <OneButtonFooter
