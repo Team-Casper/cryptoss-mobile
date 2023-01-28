@@ -12,6 +12,8 @@ import {height, width} from '@utils/index';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {BottomSheet, HideKeyboard} from '@screens/common';
 import Icon_Close from '@assets/icons/icon_close.svg';
+import Icon_Check from '@assets/icons/icon_check.svg';
+import Icon_View_More from '@assets/icons/icon_view_more.svg';
 
 const colors = {
   focusedTextColor: '#4CB6C4',
@@ -19,6 +21,7 @@ const colors = {
   focusedBorderColor: '#4CB6C4',
   blurredBorderColor: '#D9D9D9',
   chosenOptionBackgroundColor: '#D9D9D9',
+  consentColor: '#2ED8A7',
 };
 
 export const Onboarding_2 = ({navigation}: {navigation: any}) => {
@@ -26,8 +29,48 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [mobileCarrier, setMobileCarrier] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [focusedInputIdx, setFocusedInputIdx] = useState(-1); // -1은, 아무데도 focus 되지 않은 상태
-  const [showOptionModal, setShowOptionModal] = useState(false);
+  const [showMobileCarrierOptionModal, setShowMobileCarrierOptionModal] =
+    useState(false);
   const [chosenMobileCarrierIdx, setChosenMobileCarrierIdx] = useState(0);
+  const [showConsentToTermsModal, setShowConsentToTermsModal] = useState(false);
+  const [consentToTerms_1, setConsentToTerms_1] = useState(false);
+  const [consentToTerms_2, setConsentToTerms_2] = useState(false);
+  const [consentToTerms_3, setConsentToTerms_3] = useState(false);
+
+  const setConsentToTerms = (idx: number) => {
+    switch (idx) {
+      case 0:
+        setConsentToTerms_1(!consentToTerms_1);
+        return;
+      case 1:
+        setConsentToTerms_2(!consentToTerms_2);
+        return;
+      case 2:
+        setConsentToTerms_3(!consentToTerms_3);
+        return;
+    }
+  };
+
+  const consentToTerms = (idx: number) => {
+    switch (idx) {
+      case 0:
+        return consentToTerms_1;
+      case 1:
+        return consentToTerms_2;
+      case 2:
+        return consentToTerms_3;
+    }
+  };
+
+  const setConsentToAllTerms = (bool: boolean) => {
+    setConsentToTerms_1(bool);
+    setConsentToTerms_2(bool);
+    setConsentToTerms_3(bool);
+  };
+
+  const isConsentToAllTerms = () => {
+    return consentToTerms_1 && consentToTerms_2 && consentToTerms_3;
+  };
 
   const mobileCarrierList = [
     'SKT',
@@ -43,18 +86,12 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
     setMobileCarrier(mobileCarrierList[idx]);
   };
 
-  const modalContent = () => {
+  const MobileCarrierOptionModalContent = () => {
     return (
       <View style={_styles.modalContainerStyle}>
         <TouchableOpacity
-          onPress={() => setShowOptionModal(false)}
-          style={{
-            width: '100%',
-            height: 55 * height,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
+          onPress={() => setShowMobileCarrierOptionModal(false)}
+          style={_styles.modalCloseIconStyle}>
           <Icon_Close
             width={30 * height}
             height={30 * height}
@@ -89,6 +126,119 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             </Text>
           </TouchableOpacity>
         ))}
+      </View>
+    );
+  };
+
+  const ConsentToTermsModalContent = () => {
+    return (
+      <View
+        style={[
+          _styles.modalContainerStyle,
+          {height: 410 * height, paddingHorizontal: 20 * width},
+        ]}>
+        <TouchableOpacity
+          onPress={() => setShowConsentToTermsModal(false)}
+          style={_styles.modalCloseIconStyle}>
+          <Icon_Close
+            width={30 * height}
+            height={30 * height}
+            fillOpacity={0.2}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => setConsentToAllTerms(!isConsentToAllTerms())}
+          style={{
+            width: 335 * width,
+            height: 55 * height,
+            flexDirection: 'row',
+            justifyContent: 'flex-start',
+            alignItems: 'center',
+            borderWidth: 1 * height,
+            paddingHorizontal: 20 * width,
+            borderColor: isConsentToAllTerms()
+              ? colors.consentColor
+              : colors.blurredBorderColor,
+            marginBottom: 20 * height,
+            marginTop: 5 * height,
+          }}
+          activeOpacity={1}>
+          <Icon_Check
+            width={20 * height}
+            height={20 * height}
+            fill={
+              isConsentToAllTerms()
+                ? colors.consentColor
+                : colors.blurredBorderColor
+            }
+          />
+          <Text
+            style={{
+              marginLeft: 15 * width,
+              fontStyle: 'normal',
+              fontWeight: '500',
+              fontSize: 17 * height,
+              lineHeight: 32 * height,
+            }}>
+            약관에 모두 동의
+          </Text>
+        </TouchableOpacity>
+        {[
+          '크립토스 필수 항목 모두 동의',
+          '휴대폰 본인확인 서비스',
+          '마케팅 정보 수신 동의 (선택)',
+        ].map((val: string, idx) => {
+          return (
+            <TouchableOpacity
+              key={val}
+              activeOpacity={1}
+              onPress={() => setConsentToTerms(idx)}
+              style={{
+                width: '100%',
+                height: 45 * height,
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+                alignItems: 'center',
+                paddingHorizontal: 20 * width,
+              }}>
+              <Icon_Check
+                width={17 * height}
+                height={17 * height}
+                fill={
+                  consentToTerms(idx)
+                    ? colors.consentColor
+                    : colors.blurredBorderColor
+                }
+              />
+              <Text
+                style={{
+                  marginLeft: 15 * width,
+                  marginRight: 6 * height,
+                  fontStyle: 'normal',
+                  fontWeight: '300',
+                  fontSize: 15 * height,
+                  lineHeight: 32 * height,
+                }}>
+                {val}
+              </Text>
+              <Icon_View_More
+                width={10 * height}
+                height={10 * height}
+                fill={'gray'}
+              />
+            </TouchableOpacity>
+          );
+        })}
+        <OneButtonFooter
+          containerStyle={{
+            position: 'absolute',
+            left: 0,
+            right: 0,
+            bottom: 35 * height,
+          }}
+          onPress={() => navigation.navigate('Onboarding_3')}
+          buttonText={'확인'}
+        />
       </View>
     );
   };
@@ -164,7 +314,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             onTouchStart={() => {
               setFocusedInputIdx(1);
               Keyboard.dismiss();
-              setShowOptionModal(true);
+              setShowMobileCarrierOptionModal(true);
             }}
           />
           <Text
@@ -205,12 +355,12 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             right: 0,
             bottom: 35 * height,
           }}
-          onPress={() => navigation.navigate('Onboarding_3')}
-          buttonText={'확인'}
+          onPress={() => setShowConsentToTermsModal(true)}
+          buttonText={'다음'}
         />
-        {showOptionModal && (
+        {showMobileCarrierOptionModal && (
           <BottomSheet
-            setBottomSheetState={setShowOptionModal}
+            setBottomSheetState={setShowMobileCarrierOptionModal}
             bottomSheetStyleProps={{
               dim: true,
               containerStyle: {
@@ -220,7 +370,22 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
               bottomSheetHeight: 520 * height,
               bottomSheetWidth: 375 * width,
             }}
-            bottomSheetContent={modalContent}
+            bottomSheetContent={MobileCarrierOptionModalContent}
+          />
+        )}
+        {showConsentToTermsModal && (
+          <BottomSheet
+            setBottomSheetState={setShowConsentToTermsModal}
+            bottomSheetStyleProps={{
+              dim: true,
+              containerStyle: {
+                borderTopRightRadius: 20 * height,
+                borderTopLeftRadius: 20 * height,
+              },
+              bottomSheetHeight: 410 * height,
+              bottomSheetWidth: 375 * width,
+            }}
+            bottomSheetContent={ConsentToTermsModalContent}
           />
         )}
       </View>
@@ -279,6 +444,13 @@ const _styles = StyleSheet.create({
     paddingHorizontal: 20 * width,
     flexDirection: 'column',
     justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  modalCloseIconStyle: {
+    width: '100%',
+    height: 55 * height,
+    flexDirection: 'column',
+    justifyContent: 'center',
     alignItems: 'center',
   },
 });
