@@ -1,6 +1,15 @@
 import {Dimensions} from 'react-native';
 import {EdgeInsets} from 'react-native-safe-area-context';
 
+export const colors = {
+  focusedTextColor: '#4CB6C4',
+  blurredTextColor: '#828282',
+  focusedBorderColor: '#4CB6C4',
+  blurredBorderColor: '#D9D9D9',
+  chosenOptionBackgroundColor: '#D9D9D9',
+  consentColor: '#2ED8A7',
+};
+
 export class CryptossDimensions {
   private static instance: CryptossDimensions;
   public height!: number;

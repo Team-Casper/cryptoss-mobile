@@ -8,21 +8,12 @@ import {
   Keyboard,
 } from 'react-native';
 import {_globalStyles} from '@screens/styles';
-import {height, width} from '@utils/index';
+import {height, width, colors} from '@utils/index';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {BottomSheet, HideKeyboard} from '@screens/common';
 import Icon_Close from '@assets/icons/icon_close.svg';
 import Icon_Check from '@assets/icons/icon_check.svg';
 import Icon_View_More from '@assets/icons/icon_view_more.svg';
-
-const colors = {
-  focusedTextColor: '#4CB6C4',
-  blurredTextColor: '#828282',
-  focusedBorderColor: '#4CB6C4',
-  blurredBorderColor: '#D9D9D9',
-  chosenOptionBackgroundColor: '#D9D9D9',
-  consentColor: '#2ED8A7',
-};
 
 export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [nickName, setNickName] = useState('');
@@ -36,6 +27,18 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [consentToTerms_1, setConsentToTerms_1] = useState(false);
   const [consentToTerms_2, setConsentToTerms_2] = useState(false);
   const [consentToTerms_3, setConsentToTerms_3] = useState(false);
+
+  const isUserInfoFilledIn = () => {
+    return (
+      nickName.length > 0 &&
+      mobileCarrier.length > 0 &&
+      phoneNumber.length >= 10
+    );
+  };
+
+  const isConsentToTermsOkay = () => {
+    return consentToTerms_1 && consentToTerms_2;
+  };
 
   const setConsentToTerms = (idx: number) => {
     switch (idx) {
@@ -230,13 +233,17 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           );
         })}
         <OneButtonFooter
+          disabled={!isConsentToTermsOkay()}
           containerStyle={{
             position: 'absolute',
             left: 0,
             right: 0,
             bottom: 35 * height,
+            opacity: isConsentToTermsOkay() ? 1 : 0.5,
           }}
-          onPress={() => navigation.navigate('Onboarding_3')}
+          onPress={() =>
+            navigation.navigate('Onboarding_3', {phoneNumber: phoneNumber})
+          }
           buttonText={'확인'}
         />
       </View>
@@ -260,7 +267,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
         <View style={{marginTop: 24 * height}}>
           <Text
             style={[
-              _styles.textInputTitleText,
+              _globalStyles.textInputTitleText,
               {
                 color:
                   focusedInputIdx === 0
@@ -272,7 +279,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           </Text>
           <TextInput
             style={[
-              _styles.textInputStyle,
+              _globalStyles.textInputStyle,
               {
                 borderColor:
                   focusedInputIdx === 0
@@ -288,7 +295,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           />
           <Text
             style={[
-              _styles.textInputTitleText,
+              _globalStyles.textInputTitleText,
               {
                 color:
                   focusedInputIdx === 1
@@ -300,7 +307,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           </Text>
           <TextInput
             style={[
-              _styles.textInputStyle,
+              _globalStyles.textInputStyle,
               {
                 borderColor:
                   focusedInputIdx === 1
@@ -319,7 +326,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           />
           <Text
             style={[
-              _styles.textInputTitleText,
+              _globalStyles.textInputTitleText,
               {
                 color:
                   focusedInputIdx === 2
@@ -331,7 +338,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
           </Text>
           <TextInput
             style={[
-              _styles.textInputStyle,
+              _globalStyles.textInputStyle,
               {
                 borderColor:
                   focusedInputIdx === 2
@@ -343,21 +350,25 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             onBlur={() => setFocusedInputIdx(-1)}
             onChangeText={setPhoneNumber}
             value={phoneNumber}
-            placeholder={'010-****-****'}
+            placeholder={'휴대폰번호'}
             keyboardType={'phone-pad'}
             maxLength={11}
           />
         </View>
+
         <OneButtonFooter
+          disabled={!isUserInfoFilledIn()}
           containerStyle={{
             position: 'absolute',
             left: 0,
             right: 0,
             bottom: 35 * height,
+            opacity: isUserInfoFilledIn() ? 1 : 0.5,
           }}
           onPress={() => setShowConsentToTermsModal(true)}
           buttonText={'다음'}
         />
+
         {showMobileCarrierOptionModal && (
           <BottomSheet
             setBottomSheetState={setShowMobileCarrierOptionModal}
@@ -398,21 +409,6 @@ const _styles = StyleSheet.create({
     width: '80%',
     height: 30,
     backgroundColor: 'orange',
-  },
-  textInputStyle: {
-    paddingHorizontal: 18 * width,
-    marginTop: 10 * height,
-    width: 335 * width,
-    height: 54 * height,
-    borderWidth: 1,
-    borderRadius: 13 * height,
-  },
-  textInputTitleText: {
-    fontStyle: 'normal',
-    fontWeight: '400',
-    fontSize: 12 * height,
-    lineHeight: 20 * height,
-    marginTop: 20 * height,
   },
   optionElementContainer: {
     width: 335 * width,
