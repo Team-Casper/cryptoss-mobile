@@ -105,7 +105,10 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
         {mobileCarrierList.map((val: string, idx) => (
           <TouchableOpacity
             key={idx}
-            onPress={() => chooseMobileCarrierOption(idx)}
+            onPress={() => {
+              chooseMobileCarrierOption(idx);
+              setShowMobileCarrierOptionModal(false);
+            }}
             style={[
               _styles.optionElementContainer,
               {
@@ -348,7 +351,10 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             ]}
             onFocus={() => setFocusedInputIdx(2)}
             onBlur={() => setFocusedInputIdx(-1)}
-            onChangeText={setPhoneNumber}
+            onChangeText={(text: string) => {
+              setPhoneNumber(text);
+              if (text.length >= 11) Keyboard.dismiss();
+            }}
             value={phoneNumber}
             placeholder={'휴대폰번호'}
             keyboardType={'phone-pad'}
