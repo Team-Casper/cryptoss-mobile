@@ -8,6 +8,14 @@ export const _globalStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  bigText: {
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 32 * height,
+    lineHeight: 40 * height,
+    textAlign: 'center',
+    color: '#000000',
+  },
   mainText: {
     //fontFamily: 'Inter',
     fontStyle: 'normal',
