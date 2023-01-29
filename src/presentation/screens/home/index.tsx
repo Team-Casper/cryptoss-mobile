@@ -22,6 +22,18 @@ import UserDefaultProfileImage from '@assets/images/user_default_profile_image.s
 import {_globalStyles} from '@screens/styles';
 import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 
+export const formatPhoneNumber = (numString: string) => {
+  if (numString.length >= 11) {
+    return (
+      numString.slice(0, 3) +
+      '-' +
+      numString.slice(3, 7) +
+      '-' +
+      numString.slice(7)
+    );
+  } else return numString;
+};
+
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
   switch (newIdx) {
@@ -46,6 +58,9 @@ interface SimplifiedContact {
 export const HomeScreen = () => {
   const [searchString, setSearchString] = useState('');
   const [contactLists, setContactLists] = useState<SimplifiedContact[]>([]);
+  const [filteredContactLists, setFilteredContactLists] = useState<
+    SimplifiedContact[]
+  >([]);
 
   useEffect(() => {
     if (contactLists.length === 0) {
@@ -54,17 +69,42 @@ export const HomeScreen = () => {
         console.log('checkPermission:' + result),
       );
       Contacts.getAll().then(contacts => {
-        setContactLists(
-          contacts.map((val: Contacts.Contact, idx) => {
+        const simplifiedContacts = contacts.map(
+          (val: Contacts.Contact, idx) => {
             return {
               name: val.familyName + val.givenName,
-              number: val.phoneNumbers[0]?.number,
+              number: val.phoneNumbers[0]?.number
+                .replace('-', '')
+                .replace('-', ''),
             };
-          }),
+          },
         );
+        setContactLists(simplifiedContacts);
+        setFilteredContactLists(simplifiedContacts);
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (searchString.length > 0) {
+      const searchResult = contactLists.filter(val =>
+        val.number.includes(searchString),
+      );
+      if (searchString.length >= 11 && searchResult.length === 0) {
+        // 연락처에 등록된 사용자가 아닐때
+        setFilteredContactLists([
+          {
+            name: formatPhoneNumber(searchString),
+            number: '번호로 전송하기',
+          },
+        ]);
+      } else {
+        setFilteredContactLists(searchResult);
+      }
+    } else {
+      setFilteredContactLists(contactLists);
+    }
+  }, [searchString]);
 
   const headerComponent = () => {
     return (
@@ -152,11 +192,11 @@ export const HomeScreen = () => {
   const contactListsDisplay = useMemo(
     () => (
       <>
-        {contactLists.map((data: SimplifiedContact, idx) => {
+        {filteredContactLists.map((data: SimplifiedContact, idx) => {
           return (
             <View key={idx} style={_styles.contactElementContainer}>
               <View style={_styles.profilePictureContainer}>
-                {data.name === '박코인' ? (
+                {data.number === '번호로 전송하기' ? (
                   <UserDefaultProfileImage
                     width={35 * height}
                     height={35 * height}
@@ -171,7 +211,7 @@ export const HomeScreen = () => {
                   {data.name}
                 </Text>
                 <Text style={[_globalStyles.contactNumberText]}>
-                  {data.number}
+                  {formatPhoneNumber(data.number)}
                 </Text>
               </View>
               <TouchableOpacity style={_styles.sendButtonConatiner}>
@@ -185,7 +225,7 @@ export const HomeScreen = () => {
         })}
       </>
     ),
-    [contactLists],
+    [filteredContactLists],
   );
 
   return (
