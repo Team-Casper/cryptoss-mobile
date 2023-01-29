@@ -1,4 +1,4 @@
-import {width, height} from '@utils/index';
+import {width, height, colors} from '@utils/index';
 import {StyleSheet} from 'react-native';
 
 export const _globalStyles = StyleSheet.create({
@@ -60,5 +60,33 @@ export const _globalStyles = StyleSheet.create({
     fontSize: 12 * height,
     lineHeight: 20 * height,
     marginTop: 20 * height,
+  },
+  subMiniText: {
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 12 * height,
+    lineHeight: 16 * height,
+    color: colors.blurredTextColor,
+  },
+  contactUserNameText: {
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 22 * height,
+    lineHeight: 28 * height,
+    color: colors.gray_1,
+  },
+  contactNumberText: {
+    fontStyle: 'normal',
+    fontWeight: '400',
+    fontSize: 13 * height,
+    lineHeight: 18 * height,
+    color: colors.gray_2,
+  },
+  subTitleText: {
+    fontStyle: 'normal',
+    fontWeight: '700',
+    fontSize: 20 * height,
+    lineHeight: 36 * height,
+    color: colors.gray_1,
   },
 });
