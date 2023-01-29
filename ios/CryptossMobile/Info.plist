@@ -4,6 +4,8 @@
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>Privacy - Contacts Usage Description</key>
+	<string></string>
 	<key>CFBundleDisplayName</key>
 	<string>CryptossMobile</string>
 	<key>CFBundleExecutable</key>
@@ -35,6 +37,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSContactsUsageDescription</key>
+	<string></string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UILaunchStoryboardName</key>

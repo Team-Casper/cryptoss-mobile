@@ -11,6 +11,7 @@ export const colors = {
   homeScreenBackgroundColor: '#F2F2F2',
   gray_1: '#333333',
   gray_2: '#4F4F4F',
+  gray_3: '#828282',
   gray_6: '#F2F2F2',
   pointColor_light: '#2ED8A7',
 };

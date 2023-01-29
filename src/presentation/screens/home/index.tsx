@@ -1,5 +1,5 @@
 import {colors, height, width} from '@utils/index';
-import React, {useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -20,6 +20,7 @@ import Icon_Copy from '@assets/icons/icon_copy.svg';
 import Icon_Search from '@assets/icons/icon_search.svg';
 import UserDefaultProfileImage from '@assets/images/user_default_profile_image.svg';
 import {_globalStyles} from '@screens/styles';
+import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
@@ -37,8 +38,33 @@ const getSampleProfilePicture = (idx: number) => {
   }
 };
 
+interface SimplifiedContact {
+  name: string;
+  number: string;
+}
+
 export const HomeScreen = () => {
   const [searchString, setSearchString] = useState('');
+  const [contactLists, setContactLists] = useState<SimplifiedContact[]>([]);
+
+  useEffect(() => {
+    if (contactLists.length === 0) {
+      iosEnableNotesUsage(false);
+      Contacts.checkPermission().then(result =>
+        console.log('checkPermission:' + result),
+      );
+      Contacts.getAll().then(contacts => {
+        setContactLists(
+          contacts.map((val: Contacts.Contact, idx) => {
+            return {
+              name: val.familyName + val.givenName,
+              number: val.phoneNumbers[0]?.number,
+            };
+          }),
+        );
+      });
+    }
+  }, []);
 
   const headerComponent = () => {
     return (
@@ -85,9 +111,9 @@ export const HomeScreen = () => {
       </View>
     );
   };
-  return (
-    <View style={_styles.outerContainerStyle}>
-      {headerComponent()}
+
+  const searchComponent = useMemo(() => {
+    return (
       <View
         style={{
           backgroundColor: 'rgba(118, 118, 128, 0.12)',
@@ -120,83 +146,65 @@ export const HomeScreen = () => {
           keyboardType={'number-pad'}
         />
       </View>
-      <ScrollView style={{width: 375 * width}}>
-        <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
-          연락처
-        </Text>
-        <FlatList
-          data={[
-            '최굴자',
-            '박코인',
-            '이비트',
-            '강이더',
-            '나토스',
-            '최굴자2',
-            '박코인2',
-            '이비트2',
-            '강이더2',
-            '나토스2',
-          ]}
-          numColumns={1}
-          horizontal={false}
-          bounces={true}
-          alwaysBounceVertical={false}
-          showsVerticalScrollIndicator={false}
-          overScrollMode="never"
-          focusable={true}
-          style={{
-            width: 335 * width,
-            borderRadius: 20 * height,
-            backgroundColor: 'white',
-            marginBottom: 40 * height,
-          }}
-          renderItem={data => (
-            <View
-              key={data.index}
-              style={{
-                width: '100%',
-                height: 85 * height,
-                flexDirection: 'row',
-                borderRadius: 20 * height,
-                justifyContent: 'flex-start',
-                alignItems: 'center',
-                paddingHorizontal: 10 * width,
-              }}>
+    );
+  }, [searchString]);
+
+  const contactListsDisplay = useMemo(
+    () => (
+      <>
+        {contactLists.map((data: SimplifiedContact, idx) => {
+          return (
+            <View key={idx} style={_styles.contactElementContainer}>
               <View style={_styles.profilePictureContainer}>
-                {data.item === '박코인' ? (
+                {data.name === '박코인' ? (
                   <UserDefaultProfileImage
                     width={35 * height}
                     height={35 * height}
                     fill={'white'}
                   />
                 ) : (
-                  getSampleProfilePicture(data.index)
+                  getSampleProfilePicture(idx)
                 )}
               </View>
               <View style={{flexDirection: 'column', marginLeft: 13 * width}}>
                 <Text style={[_globalStyles.contactUserNameText]}>
-                  {data.item}
+                  {data.name}
                 </Text>
                 <Text style={[_globalStyles.contactNumberText]}>
-                  {'010-2222-3333'}
+                  {data.number}
                 </Text>
               </View>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: colors.gray_6,
-                  width: 40 * width,
-                  height: 24 * height,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  position: 'absolute',
-                  right: 18 * width,
-                  borderRadius: 4 * height,
-                }}>
-                <Text>전송</Text>
+              <TouchableOpacity style={_styles.sendButtonConatiner}>
+                <Text
+                  style={[_globalStyles.subMiniText, {color: colors.gray_3}]}>
+                  전송
+                </Text>
               </TouchableOpacity>
             </View>
-          )}
-        />
+          );
+        })}
+      </>
+    ),
+    [contactLists],
+  );
+
+  return (
+    <View style={_styles.outerContainerStyle}>
+      {headerComponent()}
+      {searchComponent}
+      <ScrollView style={{width: 375 * width}}>
+        <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
+          연락처
+        </Text>
+        <View
+          style={{
+            width: 335 * width,
+            borderRadius: 20 * height,
+            backgroundColor: 'white',
+            marginBottom: 40 * height,
+          }}>
+          {contactListsDisplay}
+        </View>
       </ScrollView>
     </View>
   );
@@ -209,7 +217,7 @@ const _styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    paddingTop: 55 * height,
+    paddingTop: 60 * height,
     paddingHorizontal: 20 * width,
   },
   headerContainer: {
@@ -244,5 +252,24 @@ const _styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
     paddingHorizontal: 19 * width,
+  },
+  contactElementContainer: {
+    width: '100%',
+    height: 85 * height,
+    flexDirection: 'row',
+    borderRadius: 20 * height,
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingHorizontal: 10 * width,
+  },
+  sendButtonConatiner: {
+    backgroundColor: colors.gray_6,
+    width: 40 * width,
+    height: 24 * height,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 18 * width,
+    borderRadius: 4 * height,
   },
 });

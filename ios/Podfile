@@ -23,6 +23,8 @@ end
 
 target 'CryptossMobile' do
   config = use_native_modules!
+  
+  pod 'react-native-contacts', :path => '../node_modules/react-native-contacts'
 
   # Flags change depending on the env values.
   flags = get_default_flags()
