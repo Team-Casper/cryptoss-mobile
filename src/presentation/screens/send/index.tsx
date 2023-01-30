@@ -7,7 +7,7 @@ import {Send_3} from './Send_3';
 
 const Stack = createNativeStackNavigator();
 
-export const SendNavigator = () => {
+export const SendNavigator = ({navigation}: {navigation: any}) => {
   return (
     <Stack.Navigator
       screenOptions={{headerShown: false}}

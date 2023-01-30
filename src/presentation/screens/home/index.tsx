@@ -1,4 +1,4 @@
-import {colors, height, width} from '@utils/index';
+import {colors, height, width, formatPhoneNumber} from '@utils/index';
 import React, {useEffect, useMemo, useState} from 'react';
 import {
   StyleSheet,
@@ -22,18 +22,6 @@ import UserDefaultProfileImage from '@assets/images/user_default_profile_image.s
 import {_globalStyles} from '@screens/styles';
 import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 
-export const formatPhoneNumber = (numString: string) => {
-  if (numString.length >= 11) {
-    return (
-      numString.slice(0, 3) +
-      '-' +
-      numString.slice(3, 7) +
-      '-' +
-      numString.slice(7)
-    );
-  } else return numString;
-};
-
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
   switch (newIdx) {
@@ -55,7 +43,7 @@ interface SimplifiedContact {
   number: string;
 }
 
-export const HomeScreen = () => {
+export const HomeScreen = ({navigation}: {navigation: any}) => {
   const [searchString, setSearchString] = useState('');
   const [contactLists, setContactLists] = useState<SimplifiedContact[]>([]);
   const [filteredContactLists, setFilteredContactLists] = useState<
@@ -214,7 +202,17 @@ export const HomeScreen = () => {
                   {formatPhoneNumber(data.number)}
                 </Text>
               </View>
-              <TouchableOpacity style={_styles.sendButtonConatiner}>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.push('SendNavigator', {
+                    screen: 'Send_1',
+                    params: {
+                      personName: data.name,
+                      personPhoneNumber: data.number,
+                    },
+                  })
+                }
+                style={_styles.sendButtonConatiner}>
                 <Text
                   style={[_globalStyles.subMiniText, {color: colors.gray_3}]}>
                   전송
