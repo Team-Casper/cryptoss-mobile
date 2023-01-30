@@ -4,7 +4,7 @@ import React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {OnboardingNavigator} from './authentication/onboarding';
 import {SendNavigator} from './send';
-import {HomeScreen} from './home';
+import {HomeBottomTabNavigator} from './home';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,7 +20,7 @@ export const RootNavigator = () => {
             component={OnboardingNavigator}
             name="OnboardingNavigator"
           />
-          <Stack.Screen component={HomeScreen} name="HomeScreen" />
+          <Stack.Screen component={HomeBottomTabNavigator} name="HomeScreen" />
           <Stack.Screen component={SendNavigator} name="SendNavigator" />
         </Stack.Navigator>
       </NavigationContainer>
