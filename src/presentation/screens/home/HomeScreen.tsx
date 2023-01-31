@@ -9,6 +9,7 @@ import {
   Image,
   TouchableOpacity,
   TextInput,
+  Modal,
 } from 'react-native';
 import SamplePf_1 from '@assets/images/sample_pf_1.svg';
 import SamplePf_2 from '@assets/images/sample_pf_2.svg';
@@ -21,6 +22,7 @@ import Icon_Search from '@assets/icons/icon_search.svg';
 import UserDefaultProfileImage from '@assets/images/user_default_profile_image.svg';
 import {_globalStyles} from '@screens/styles';
 import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
+import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
@@ -44,51 +46,61 @@ interface SimplifiedContact {
 }
 
 export const headerComponent = (hideHoldingAPTAmountDisplay?: boolean) => {
+  const [showProfileInfoEditModal, setShowProfileInfoEditModal] =
+    useState(true);
+
   return (
-    <View style={_styles.headerContainer}>
-      <View style={_styles.profilePictureContainer}>
-        <SamplePf_1 width={63 * height} height={63 * height} />
-      </View>
-      <View style={_styles.userNameConatiner}>
-        <Text style={[_globalStyles.confirmButtonText, {color: 'black'}]}>
-          김블록
-        </Text>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <Text style={[_globalStyles.subMiniText, {marginRight: 3 * height}]}>
-            0x00...1234
+    <>
+      <Modal transparent={true} visible={showProfileInfoEditModal}>
+        <Text>hi</Text>
+      </Modal>
+      )
+      <View style={_styles.headerContainer}>
+        <View style={_styles.profilePictureContainer}>
+          <SamplePf_1 width={63 * height} height={63 * height} />
+        </View>
+        <View style={_styles.userNameConatiner}>
+          <Text style={[_globalStyles.confirmButtonText, {color: 'black'}]}>
+            김블록
           </Text>
-          <Icon_Copy
-            fill={colors.blurredTextColor}
-            width={12 * height}
-            height={12 * height}
-          />
+          <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Text
+              style={[_globalStyles.subMiniText, {marginRight: 3 * height}]}>
+              0x00...1234
+            </Text>
+            <Icon_Copy
+              fill={colors.blurredTextColor}
+              width={12 * height}
+              height={12 * height}
+            />
+          </View>
+        </View>
+        <View
+          style={[
+            _styles.holdingAPTAmountDisplayContainer,
+            hideHoldingAPTAmountDisplay && {opacity: 0},
+          ]}>
+          <Text
+            style={[
+              _globalStyles.confirmButtonText,
+              {color: colors.gray_2, lineHeight: 0},
+            ]}>
+            APT
+          </Text>
+          <Text
+            style={[
+              _globalStyles.confirmButtonText,
+              {
+                color: colors.pointColor_light,
+                fontSize: 25 * height,
+                lineHeight: 0,
+              },
+            ]}>
+            10,000
+          </Text>
         </View>
       </View>
-      <View
-        style={[
-          _styles.holdingAPTAmountDisplayContainer,
-          hideHoldingAPTAmountDisplay && {opacity: 0},
-        ]}>
-        <Text
-          style={[
-            _globalStyles.confirmButtonText,
-            {color: colors.gray_2, lineHeight: 0},
-          ]}>
-          APT
-        </Text>
-        <Text
-          style={[
-            _globalStyles.confirmButtonText,
-            {
-              color: colors.pointColor_light,
-              fontSize: 25 * height,
-              lineHeight: 0,
-            },
-          ]}>
-          10,000
-        </Text>
-      </View>
-    </View>
+    </>
   );
 };
 
@@ -231,7 +243,8 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={_styles.outerContainerStyle}>
-      {headerComponent(false)}
+      <UserProfileHeader hideHoldingAPTAmountDisplay={false} />
+      {/*headerComponent(false)*/}
       {searchComponent}
       <ScrollView style={{width: 375 * width}}>
         <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
