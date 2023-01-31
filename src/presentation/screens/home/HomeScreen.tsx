@@ -43,6 +43,55 @@ interface SimplifiedContact {
   number: string;
 }
 
+export const headerComponent = (hideHoldingAPTAmountDisplay?: boolean) => {
+  return (
+    <View style={_styles.headerContainer}>
+      <View style={_styles.profilePictureContainer}>
+        <SamplePf_1 width={63 * height} height={63 * height} />
+      </View>
+      <View style={_styles.userNameConatiner}>
+        <Text style={[_globalStyles.confirmButtonText, {color: 'black'}]}>
+          김블록
+        </Text>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+          <Text style={[_globalStyles.subMiniText, {marginRight: 3 * height}]}>
+            0x00...1234
+          </Text>
+          <Icon_Copy
+            fill={colors.blurredTextColor}
+            width={12 * height}
+            height={12 * height}
+          />
+        </View>
+      </View>
+      <View
+        style={[
+          _styles.holdingAPTAmountDisplayContainer,
+          hideHoldingAPTAmountDisplay && {opacity: 0},
+        ]}>
+        <Text
+          style={[
+            _globalStyles.confirmButtonText,
+            {color: colors.gray_2, lineHeight: 0},
+          ]}>
+          APT
+        </Text>
+        <Text
+          style={[
+            _globalStyles.confirmButtonText,
+            {
+              color: colors.pointColor_light,
+              fontSize: 25 * height,
+              lineHeight: 0,
+            },
+          ]}>
+          10,000
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 export const HomeScreen = ({navigation}: {navigation: any}) => {
   const [searchString, setSearchString] = useState('');
   const [contactLists, setContactLists] = useState<SimplifiedContact[]>([]);
@@ -93,52 +142,6 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
       setFilteredContactLists(contactLists);
     }
   }, [searchString]);
-
-  const headerComponent = () => {
-    return (
-      <View style={_styles.headerContainer}>
-        <View style={_styles.profilePictureContainer}>
-          <SamplePf_1 width={63 * height} height={63 * height} />
-        </View>
-        <View style={_styles.userNameConatiner}>
-          <Text style={[_globalStyles.confirmButtonText, {color: 'black'}]}>
-            김블록
-          </Text>
-          <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <Text
-              style={[_globalStyles.subMiniText, {marginRight: 3 * height}]}>
-              0x00...1234
-            </Text>
-            <Icon_Copy
-              fill={colors.blurredTextColor}
-              width={12 * height}
-              height={12 * height}
-            />
-          </View>
-        </View>
-        <View style={_styles.holdingAPTAmountDisplayContainer}>
-          <Text
-            style={[
-              _globalStyles.confirmButtonText,
-              {color: colors.gray_2, lineHeight: 0},
-            ]}>
-            APT
-          </Text>
-          <Text
-            style={[
-              _globalStyles.confirmButtonText,
-              {
-                color: colors.pointColor_light,
-                fontSize: 25 * height,
-                lineHeight: 0,
-              },
-            ]}>
-            10,000
-          </Text>
-        </View>
-      </View>
-    );
-  };
 
   const searchComponent = useMemo(() => {
     return (
@@ -228,7 +231,7 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
 
   return (
     <View style={_styles.outerContainerStyle}>
-      {headerComponent()}
+      {headerComponent(false)}
       {searchComponent}
       <ScrollView style={{width: 375 * width}}>
         <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
