@@ -23,10 +23,14 @@ export const UserProfileHeader = ({
 }) => {
   const [showProfileInfoEditModal, setShowProfileInfoEditModal] =
     useState(false);
+  const [
+    finalSavedProfilePictureImageUrl,
+    setFinalSavedProfilePictureImageUrl,
+  ] = useState(
+    'https://pbs.twimg.com/profile_images/1562384922241024003/ugOUrz2R_400x400.jpg',
+  );
   const [currentProfilePictureImageUrl, setCurrentProfilePictureImageUrl] =
-    useState(
-      'https://pbs.twimg.com/profile_images/1562384922241024003/ugOUrz2R_400x400.jpg',
-    );
+    useState('');
   const [chosenNftIdx, setChosenNftIdx] = useState(-2); // 초기값
   const [holdingNftList, setHoldingNftList] = useState<NftInfo[]>([
     {
@@ -59,10 +63,13 @@ export const UserProfileHeader = ({
   ]);
 
   useEffect(() => {
+    if (currentProfilePictureImageUrl.length <= 0) {
+      setCurrentProfilePictureImageUrl(finalSavedProfilePictureImageUrl);
+    }
     if (chosenNftIdx === -2) {
       const indexOfCurrenProfileNft = holdingNftList
         .map((val: NftInfo) => val.imageUrl)
-        .indexOf(currentProfilePictureImageUrl);
+        .indexOf(finalSavedProfilePictureImageUrl);
       setChosenNftIdx(indexOfCurrenProfileNft);
     }
   }, []);
@@ -128,6 +135,9 @@ export const UserProfileHeader = ({
             <View style={_styles.footerContainer}>
               <TouchableOpacity
                 onPress={() => {
+                  setCurrentProfilePictureImageUrl(
+                    finalSavedProfilePictureImageUrl,
+                  );
                   setShowProfileInfoEditModal(false);
                 }}
                 style={[_styles.footerButtonStyle]}
@@ -137,6 +147,9 @@ export const UserProfileHeader = ({
             </View>
             <OneButtonFooter
               onPress={() => {
+                setFinalSavedProfilePictureImageUrl(
+                  currentProfilePictureImageUrl,
+                );
                 setShowProfileInfoEditModal(false);
               }}
               buttonText={'완료'}
@@ -161,7 +174,10 @@ export const UserProfileHeader = ({
           }}
           activeOpacity={1}
           style={_styles.profilePictureContainer}>
-          <SamplePf_1 width={63 * height} height={63 * height} />
+          <Image
+            style={{width: 63 * height, height: '100%'}}
+            source={{uri: finalSavedProfilePictureImageUrl}}
+          />
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
