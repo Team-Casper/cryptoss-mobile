@@ -4,18 +4,20 @@ import {RootNavigator} from './src/presentation/screens/RootNavigator';
 import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {SWRConfig} from 'swr';
 import axios from 'axios';
-import Operator from 'swrapi/Operator';
+import {RecoilRoot} from 'recoil';
 
 function App(): JSX.Element {
   return (
     <>
-      <SWRConfig
-        value={{
-          fetcher: (url: string) => axios.get(url).then(res => res.data),
-        }}>
-        {/* <Operator /> */}
-        <RootNavigator />
-      </SWRConfig>
+      <RecoilRoot>
+        <SWRConfig
+          value={{
+            fetcher: (url: string) => axios.get(url).then(res => res.data),
+          }}>
+          {/* <Operator /> */}
+          <RootNavigator />
+        </SWRConfig>
+      </RecoilRoot>
     </>
   );
 

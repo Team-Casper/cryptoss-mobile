@@ -9,10 +9,12 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  Alert,
 } from 'react-native';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import CountDown from 'react-native-countdown-component';
+import {authenticatePhone} from 'api/auth';
 
 export const Onboarding_3 = ({
   navigation,
@@ -143,10 +145,12 @@ export const Onboarding_3 = ({
           style={{position: 'absolute', bottom: 57 * height}}
           behavior={'padding'}>
           <TouchableOpacity
-            onPress={() => {
-              if (certificationNumber.length == 6) {
-                navigation.navigate('Onboarding_4');
-              }
+            onPress={async () => {
+              const pass = await authenticatePhone(
+                phoneNumber,
+                certificationNumber,
+              );
+              if (pass) navigation.navigate('Onboarding_4');
             }}
             style={{opacity: certificationNumber.length == 6 ? 1 : 0.5}}>
             <LinearGradient
