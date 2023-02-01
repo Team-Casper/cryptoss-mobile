@@ -9,7 +9,7 @@ import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
 const isNum = (val: string) => /^\d+$/.test(val);
 
 export const Send_2 = ({navigation, route}: {navigation: any; route: any}) => {
-  const {personName, amountToSend} = route.params;
+  const {personName, amountToSend, personPhoneNumber} = route.params;
   const [password, setPassword] = useState('');
   const [mismatchError, setMismatchError] = useState(false);
 
@@ -78,6 +78,7 @@ export const Send_2 = ({navigation, route}: {navigation: any; route: any}) => {
           // 일치하지 않을 경우 setMismatchError(true)로 바꾸고 다음 페이지로 못넘어가게 막고, setPassword('') 해주어야함
           navigation.navigate('Send_3', {
             personName: personName,
+            personPhoneNumber: personPhoneNumber,
             amountToSend: amountToSend,
           });
         }

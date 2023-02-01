@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import SamplePf_1 from '@assets/images/sample_pf_1.svg';
 import Icon_Copy from '@assets/icons/icon_copy.svg';
 import Icon_Edit from '@assets/icons/icon_edit.svg';
 import {colors, height, width} from '@utils/index';

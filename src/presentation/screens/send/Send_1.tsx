@@ -140,6 +140,7 @@ export const Send_1 = ({navigation, route}: {navigation: any; route: any}) => {
             onPress={() => {
               navigation.navigate('Send_2', {
                 personName: personName,
+                personPhoneNumber: personPhoneNumber,
                 amountToSend: amountToSend,
               });
             }}

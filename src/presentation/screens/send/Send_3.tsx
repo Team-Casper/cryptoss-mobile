@@ -11,6 +11,7 @@ import React, {useEffect, useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Share,
   StyleSheet,
   Text,
   TextInput,
@@ -24,7 +25,7 @@ import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import LottieView from 'lottie-react-native';
 
 export const Send_3 = ({navigation, route}: {navigation: any; route: any}) => {
-  const {personName, amountToSend} = route.params;
+  const {personName, amountToSend, personPhoneNumber} = route.params;
   const [displayLottie_1, setDisplayLottie_1] = useState(true);
 
   useEffect(() => {
@@ -34,6 +35,36 @@ export const Send_3 = ({navigation, route}: {navigation: any; route: any}) => {
       }, 4000);
     }
   }, []);
+
+  const onShare = async () => {
+    try {
+      const result = await Share.share({
+        message: `${
+          '[크립토스] ' +
+          'ㅇㅇㅇ' +
+          '님이 송금한 ' +
+          addComma(amountToSend) +
+          ' APT (' +
+          addComma(amountToSend * 20000) +
+          '원) 가 ' +
+          formatPhoneNumber(personPhoneNumber) +
+          ' 님의 크립토스 지갑에 입금되었습니다.'
+        } \n\n${'아래 링크를 통해 지금 바로 크립토스를 시작해보세요!'} \n\n ${'https://cryptoss.xyz/'}`,
+      });
+
+      if (result.action === Share.sharedAction) {
+        if (result.activityType) {
+          console.log('activityType!');
+        } else {
+          console.log('Share!');
+        }
+      } else if (result.action === Share.dismissedAction) {
+        console.log('dismissed');
+      }
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
 
   return (
     <View style={[_globalStyles.outerContainerStyle]}>
@@ -103,6 +134,9 @@ export const Send_3 = ({navigation, route}: {navigation: any; route: any}) => {
           }}>
           <View style={_styles.footerContainer}>
             <TouchableOpacity
+              onPress={() => {
+                onShare();
+              }}
               style={[_styles.footerButtonStyle]}
               activeOpacity={1}>
               <Text style={[_styles.footerButtonTextStyle]}>{'공유하기'}</Text>
@@ -163,3 +197,6 @@ const _styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+function alert(message: any) {
+  throw new Error('Function not implemented.');
+}

@@ -25,7 +25,8 @@ export const HomeBottomTabNavigator = () => {
         tabBarStyle: {
           borderRadius: 16 * height,
           backgroundColor: 'white',
-          borderTopColor: 'transparent',
+          borderTopWidth: 1 * height,
+          borderTopColor: colors.gray_6,
           height: 95 * height,
           paddingTop: 12 * height,
           paddingHorizontal: 15 * height,
