@@ -14,6 +14,8 @@ export const colors = {
   gray_3: '#828282',
   gray_6: '#F2F2F2',
   pointColor_light: '#2ED8A7',
+  blue: '#4595F4',
+  red: '#EB5757',
 };
 
 export class CryptossDimensions {
