@@ -13,15 +13,9 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import {headerComponent} from './HomeScreen';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
+import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 
-interface CoinInfo {
-  coinName: string;
-  coinAmount: number;
-}
-
-interface NftInfo {
-  imageUrl: string;
-}
+import {CoinInfo, NftInfo} from '@utils/index';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([
@@ -170,9 +164,9 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
             }}>
             {holdingNftList.map((nftInfo: NftInfo, idx) => {
               return (
-                <View style={_styles.nftImageContainer}>
+                <View key={nftInfo.imageUrl} style={_styles.nftImageContainer}>
                   <Image
-                    resizeMode="contain"
+                    resizeMode="contain" // "contain"
                     style={_styles.nftImageStyle}
                     source={{uri: nftInfo.imageUrl}}
                   />
@@ -188,7 +182,7 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={[_styles.outerContainerStyle, {paddingHorizontal: 0}]}>
       <View style={{marginHorizontal: 20 * width}}>
-        {headerComponent(true)}
+        <UserProfileHeader hideHoldingAPTAmountDisplay={true} />
       </View>
       <ScrollView contentContainerStyle={_styles.mainContentContainerStyle}>
         {showMyApt()}
@@ -220,7 +214,7 @@ const _styles = StyleSheet.create({
     width: 140 * height,
     height: 190 * height,
     borderRadius: 8 * height,
-    backgroundColor: colors.gray_6,
+    backgroundColor: '#adb3b3',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 15 * height,
@@ -229,7 +223,6 @@ const _styles = StyleSheet.create({
   nftImageStyle: {
     width: '100%',
     height: '100%',
-    //borderRadius: 8 * height,
   },
   coinListElementContainer: {
     width: '100%',
