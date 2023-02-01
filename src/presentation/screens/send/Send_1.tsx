@@ -19,8 +19,8 @@ import {
 } from 'react-native';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
 import {HideKeyboard} from '@screens/common';
-import LinearGradient from 'react-native-linear-gradient';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const Send_1 = ({navigation, route}: {navigation: any; route: any}) => {
   const {personName, personPhoneNumber} = route.params;

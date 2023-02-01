@@ -20,7 +20,7 @@ import {
 } from 'react-native';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
 import {HideKeyboard} from '@screens/common';
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from 'expo-linear-gradient';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import LottieView from 'lottie-react-native';
 

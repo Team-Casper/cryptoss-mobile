@@ -10,12 +10,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+
 import {headerComponent} from './HomeScreen';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 
 import {CoinInfo, NftInfo} from '@utils/index';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([

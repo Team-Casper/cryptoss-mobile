@@ -12,9 +12,9 @@ import {
   Alert,
 } from 'react-native';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
-import LinearGradient from 'react-native-linear-gradient';
 import CountDown from 'react-native-countdown-component';
 import {authenticatePhone} from 'api/auth';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export const Onboarding_3 = ({
   navigation,
@@ -162,7 +162,8 @@ export const Onboarding_3 = ({
               }}
               colors={['#4CB6C4', '#2ED8A7']}
               start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}>
+              end={{x: 1, y: 1}}
+              >
               <Text style={_globalStyles.confirmButtonText}>확인</Text>
             </LinearGradient>
           </TouchableOpacity>

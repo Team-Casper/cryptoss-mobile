@@ -5,6 +5,7 @@ import {SafeAreaView, ScrollView, Text, View} from 'react-native';
 import {SWRConfig} from 'swr';
 import axios from 'axios';
 import {RecoilRoot} from 'recoil';
+import { StatusBar } from 'expo-status-bar';
 
 function App(): JSX.Element {
   return (
@@ -16,6 +17,7 @@ function App(): JSX.Element {
           }}>
           {/* <Operator /> */}
           <RootNavigator />
+          <StatusBar style="auto" />
         </SWRConfig>
       </RecoilRoot>
     </>

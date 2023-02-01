@@ -3,8 +3,8 @@ import {colors, height, width} from '@utils/index';
 import React, {useState} from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import Icon_Delete from '@assets/icons/icon_delete.svg';
-import LinearGradient from 'react-native-linear-gradient';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const isNum = (val: string) => /^\d+$/.test(val);
 

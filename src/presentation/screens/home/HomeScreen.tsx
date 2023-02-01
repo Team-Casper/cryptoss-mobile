@@ -21,7 +21,7 @@ import Icon_Copy from '@assets/icons/icon_copy.svg';
 import Icon_Search from '@assets/icons/icon_search.svg';
 import UserDefaultProfileImage from '@assets/images/user_default_profile_image.svg';
 import {_globalStyles} from '@screens/styles';
-import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
+// import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 
 const getSampleProfilePicture = (idx: number) => {
@@ -111,28 +111,28 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
     SimplifiedContact[]
   >([]);
 
-  useEffect(() => {
-    if (contactLists.length === 0) {
-      iosEnableNotesUsage(false);
-      Contacts.checkPermission().then(result =>
-        console.log('checkPermission:' + result),
-      );
-      Contacts.getAll().then(contacts => {
-        const simplifiedContacts = contacts.map(
-          (val: Contacts.Contact, idx) => {
-            return {
-              name: val.familyName + val.givenName,
-              number: val.phoneNumbers[0]?.number
-                .replace('-', '')
-                .replace('-', ''),
-            };
-          },
-        );
-        setContactLists(simplifiedContacts);
-        setFilteredContactLists(simplifiedContacts);
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (contactLists.length === 0) {
+  //     iosEnableNotesUsage(false);
+  //     Contacts.checkPermission().then(result =>
+  //       console.log('checkPermission:' + result),
+  //     );
+  //     Contacts.getAll().then(contacts => {
+  //       const simplifiedContacts = contacts.map(
+  //         (val: Contacts.Contact, idx) => {
+  //           return {
+  //             name: val.familyName + val.givenName,
+  //             number: val.phoneNumbers[0]?.number
+  //               .replace('-', '')
+  //               .replace('-', ''),
+  //           };
+  //         },
+  //       );
+  //       setContactLists(simplifiedContacts);
+  //       setFilteredContactLists(simplifiedContacts);
+  //     });
+  //   }
+  // }, []);
 
   useEffect(() => {
     if (searchString.length > 0) {

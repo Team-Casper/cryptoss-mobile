@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {width, height, scale} from '@utils/index';
-import LinearGradient from 'react-native-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 
 export type OneButtonFooterProps = {
   onPress: () => void;
@@ -21,11 +21,11 @@ export type OneButtonFooterProps = {
   borderWidth?: number;
   borderColor?: ColorValue;
   disabled?: boolean;
-  iconRight?: () => JSX.Element;
-  iconLeft?: () => JSX.Element;
+  iconRight?:  React.ElementType;
+  iconLeft?: React.ElementType;
 };
 
-const _OneButtonFooter: React.FC<OneButtonFooterProps> = props => {
+const _OneButtonFooter: React.ElementType<OneButtonFooterProps> = props => {
   const {
     onPress,
     buttonText,
@@ -70,7 +70,8 @@ const _OneButtonFooter: React.FC<OneButtonFooterProps> = props => {
                 }
               : {},
           ]}>
-          {iconLeft ? iconLeft() : <></>}
+          <>
+          {iconLeft ? iconLeft : <></>}
           <Text
             style={[
               _styles.footerButtonTextStyle,
@@ -82,7 +83,8 @@ const _OneButtonFooter: React.FC<OneButtonFooterProps> = props => {
             ]}>
             {buttonText}
           </Text>
-          {iconRight ? iconRight() : <></>}
+          {iconRight ? iconRight : <></>}
+          </>
         </LinearGradient>
       </TouchableOpacity>
     </View>
