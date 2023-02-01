@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Text,
@@ -14,6 +14,9 @@ import {BottomSheet, HideKeyboard} from '@screens/common';
 import Icon_Close from '@assets/icons/icon_close.svg';
 import Icon_Check from '@assets/icons/icon_check.svg';
 import Icon_View_More from '@assets/icons/icon_view_more.svg';
+import {requestForPhoneAuthentication} from 'api/auth';
+// import {useRecoilState} from 'recoil';
+// import {phoneVerificationState} from 'store/phoneVerificationState';
 
 export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [nickName, setNickName] = useState('');
@@ -27,6 +30,9 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [consentToTerms_1, setConsentToTerms_1] = useState(false);
   const [consentToTerms_2, setConsentToTerms_2] = useState(false);
   const [consentToTerms_3, setConsentToTerms_3] = useState(false);
+  // const [phoneVerification, setPhoneVerification] = useRecoilState(
+  //   phoneVerificationState,
+  // );
 
   const isUserInfoFilledIn = () => {
     return (
@@ -244,9 +250,14 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             bottom: 35 * height,
             opacity: isConsentToTermsOkay() ? 1 : 0.5,
           }}
-          onPress={() =>
-            navigation.navigate('Onboarding_3', {phoneNumber: phoneNumber})
-          }
+          onPress={async () => {
+            await requestForPhoneAuthentication(
+              nickName,
+              phoneNumber,
+              mobileCarrier,
+            );
+            navigation.navigate('Onboarding_3', {phoneNumber: phoneNumber});
+          }}
           buttonText={'확인'}
         />
       </View>

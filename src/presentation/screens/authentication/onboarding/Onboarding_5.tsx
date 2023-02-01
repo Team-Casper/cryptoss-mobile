@@ -4,6 +4,7 @@ import {colors, height, width} from '@utils/index';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
+import {storeData} from '@utils/AsyncStorage';
 
 export const Onboarding_5 = ({navigation}: {navigation: any}) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
@@ -50,7 +51,10 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
           opacity: nextButtonVisible ? 1 : 0.3,
         }}
         buttonWidth={260 * width}
-        onPress={() => navigation.navigate('HomeScreen')}
+        onPress={async () => {
+          await storeData('onboarding', 'true');
+          navigation.navigate('HomeScreen');
+        }}
         buttonText={'지금 바로 크립토스 시작하기 →'}
       />
     </View>

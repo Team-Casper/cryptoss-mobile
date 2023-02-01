@@ -5,6 +5,7 @@ import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import Icon_Delete from '@assets/icons/icon_delete.svg';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
+import {storeData} from '@utils/AsyncStorage';
 
 const isNum = (val: string) => /^\d+$/.test(val);
 
@@ -49,9 +50,10 @@ export const Onboarding_4 = ({navigation}: {navigation: any}) => {
     );
   };
 
-  const checkPasswordMatch = (confirmPasswordString: string) => {
+  const checkPasswordMatch = async (confirmPasswordString: string) => {
     if (password === confirmPasswordString) {
       // TO-DO : 앞서 입력한 정보에 기반해 새로운 계정+지갑 생성
+      await storeData('password', password);
       navigation.navigate('Onboarding_5');
     } else {
       setMismatchError(true);
