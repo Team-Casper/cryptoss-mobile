@@ -5,10 +5,32 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {storeData} from '@utils/AsyncStorage';
+import useWalletState from 'hooks/useWalletState';
+import { FaucetClient } from 'aptos';
+import { createNewAccount } from '@utils/aptos/account';
+import { FAUCET_URL, NODE_URL } from '@utils/aptos/core/constants';
 
 export const Onboarding_5 = ({navigation}: {navigation: any}) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
   const [displayLottie, setDisplayLottie] = useState(true);
+
+  // const [isAccountBeingCreated, setIsAccountBeingCreated] = useState<boolean>(false);
+  const { aptosAccount, updateWalletState } = useWalletState();
+  const privateKeyObject = aptosAccount?.toPrivateKeyObject();
+  const privateKeyHex = privateKeyObject?.privateKeyHex;
+  const publicKeyHex = privateKeyObject?.publicKeyHex;
+  const address = privateKeyObject?.address;
+
+  const createAccountOnClick = async () => {
+    // setIsAccountBeingCreated(true);
+    const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
+    const account = createNewAccount();
+    await faucetClient.fundAccount(account.address(), 0);
+    updateWalletState({ aptosAccountState: account });
+    // setIsAccountBeingCreated(false);
+  };
+
+
 
   useEffect(() => {
     if (displayLottie && !nextButtonVisible) {
@@ -52,6 +74,7 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
         }}
         buttonWidth={260 * width}
         onPress={async () => {
+          createAccountOnClick();
           await storeData('onboarding', 'true');
           navigation.navigate('HomeScreen');
         }}

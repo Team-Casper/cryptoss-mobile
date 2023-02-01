@@ -17,7 +17,6 @@ export const RootNavigator = () => {
   const getIsOnboarding = async () => {
     const _isOnboarding = await getData('onboarding');
     setIsOnboarding(JSON.parse(_isOnboarding));
-    console.log(_isOnboarding);
   };
 
   useEffect(() => {
