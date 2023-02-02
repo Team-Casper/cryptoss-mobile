@@ -1,3 +1,4 @@
+import {ButtonSegmented} from '@components/buttons/ButtonSegmented';
 import {_globalStyles} from '@screens/styles';
 import {colors, height, width} from '@utils/globalConfig';
 import React, {useEffect, useState} from 'react';
@@ -163,6 +164,18 @@ export const MyTransactionRecordsScreen = ({navigation}: {navigation: any}) => {
         ]}>
         거래이력
       </Text>
+      <ButtonSegmented
+        selectedTabIdx={0}
+        tabTitleList={['1개월', '3개월', '6개월', '1년']}
+        style={{
+          marginLeft: 20 * width,
+          width: (375 - 40) * width,
+          height: 40 * height,
+          borderRadius: 15 * height,
+          marginBottom: 30 * height,
+        }}
+        setSelectedTabIdx={(idx: number) => {}}
+      />
       <ScrollView
         style={{width: 375 * width}}
         contentContainerStyle={{
@@ -199,6 +212,14 @@ export const MyTransactionRecordsScreen = ({navigation}: {navigation: any}) => {
 };
 
 const _styles = StyleSheet.create({
+  periodSection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '20%',
+    height: '70%',
+    borderRightWidth: 1 * height,
+    borderRightColor: colors.gray_6,
+  },
   gasFeeText: {
     fontStyle: 'normal',
     fontWeight: '700',
