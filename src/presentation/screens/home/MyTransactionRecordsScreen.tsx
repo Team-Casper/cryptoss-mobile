@@ -172,7 +172,7 @@ export const MyTransactionRecordsScreen = ({navigation}: {navigation: any}) => {
           width: (375 - 40) * width,
           height: 40 * height,
           borderRadius: 15 * height,
-          marginBottom: 30 * height,
+          marginBottom: 20 * height,
         }}
         setSelectedTabIdx={(idx: number) => {}}
       />
@@ -183,6 +183,7 @@ export const MyTransactionRecordsScreen = ({navigation}: {navigation: any}) => {
           alignItems: 'flex-start',
           paddingBottom: 25 * height,
           paddingHorizontal: 20 * width,
+          paddingTop: 10 * height,
         }}>
         {myTransactionList.length >= 1 && (
           <>
