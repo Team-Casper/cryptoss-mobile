@@ -27,12 +27,15 @@ import {
   UserProfileHeader,
 } from '@components/headers/UserProfileHeader';
 import {reset} from 'numeral';
-import {getAptosAccountState} from '@utils/aptos/account';
+import {getAptosAccountState, getAsyncStorageState} from '@utils/aptos/account';
 import {useRecoilState} from 'recoil';
 import {onboardingUserState} from 'store/onboardingUserState';
 import {getAccountByPhoneNumber} from 'api/auth';
 import {getData} from '@utils/AsyncStorage';
-import {USER_PHONE_NUM_ASYNC_STORAGE_KEY} from '@utils/aptos/core/constants';
+import {
+  NODE_URL,
+  USER_PHONE_NUM_ASYNC_STORAGE_KEY,
+} from '@utils/aptos/core/constants';
 import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 import {
   SampleNft1,
@@ -50,6 +53,8 @@ import {
   SampleNft13,
   SampleNft14,
 } from '@assets/images';
+import {AptosAccount, AptosClient, CoinClient} from 'aptos';
+import {AptosAccountState} from '@utils/aptos/core/types';
 
 const SampleProfilePictureImgSrcList = [
   SampleNft1,
@@ -148,19 +153,39 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
     SimplifiedContact[]
   >([]);
   const [userState, setUserState] = useRecoilState(onboardingUserState);
+  const [accountState, setAccountState] = useState<any>();
 
-  const getBalance = async () => {
-    const account = await getAptosAccountState();
+  const getAptosAccountState = async () => {
+    const aptosAccountState = await getData('aptosAccountState');
+    console.log(aptosAccountState);
+    setAccountState(aptosAccountState);
   };
 
   const getAddressFromPhoneNumber = async () => {
     const phoneNumber = await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY);
     const address = await getAccountByPhoneNumber(phoneNumber);
-    console.log(address);
+    return address?.address;
   };
+
+  const transferAPT = async (to: string, amount: number): Promise<string> => {
+    const from = accountState;
+    const client = new AptosClient(NODE_URL);
+    const coinCli = new CoinClient(client);
+
+    return coinCli.transfer(from, to, amount);
+  };
+
   useEffect(() => {
-    getBalance();
+    getAptosAccountState();
     getAddressFromPhoneNumber();
+    const to =
+      '0x6626a976ef381b279d50ff46156e3612eb7a885f48310f0899642b2f7166bb48';
+    // transferAPT(
+    //   to,
+    //   1,
+    // );
+
+    console.log('done!');
   }, []);
 
   // useEffect(() => {
