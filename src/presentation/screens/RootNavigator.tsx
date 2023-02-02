@@ -15,7 +15,7 @@ export const RootNavigator = () => {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{headerShown: false}}
-          initialRouteName="HomeScreen">
+          initialRouteName="OnboardingNavigator">
           <Stack.Screen
             component={OnboardingNavigator}
             name="OnboardingNavigator"

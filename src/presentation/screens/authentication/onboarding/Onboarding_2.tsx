@@ -15,6 +15,8 @@ import Icon_Close from '@assets/icons/icon_close.svg';
 import Icon_Check from '@assets/icons/icon_check.svg';
 import Icon_View_More from '@assets/icons/icon_view_more.svg';
 
+const isNum = (val: string) => /^\d+$/.test(val);
+
 export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [nickName, setNickName] = useState('');
   const [mobileCarrier, setMobileCarrier] = useState('');
@@ -352,12 +354,12 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             onFocus={() => setFocusedInputIdx(2)}
             onBlur={() => setFocusedInputIdx(-1)}
             onChangeText={(text: string) => {
-              setPhoneNumber(text);
+              if (isNum(text)) setPhoneNumber(text);
               if (text.length >= 11) Keyboard.dismiss();
             }}
             value={phoneNumber}
             placeholder={'휴대폰번호'}
-            keyboardType={'phone-pad'}
+            keyboardType={'numeric'}
             maxLength={11}
           />
         </View>
