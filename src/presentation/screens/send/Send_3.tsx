@@ -85,7 +85,7 @@ export const Send_3 = ({navigation, route}: {navigation: any; route: any}) => {
       ) : (
         <LottieView
           source={{
-            uri: 'https://assets10.lottiefiles.com/packages/lf20_ysasslfv.json', //  'https://assets10.lottiefiles.com/packages/lf20_txJcSM.json',
+            uri: 'https://assets10.lottiefiles.com/packages/lf20_ysasslfv.json',
           }}
           style={{
             position: 'absolute',

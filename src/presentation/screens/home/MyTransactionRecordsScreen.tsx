@@ -54,13 +54,6 @@ const sampleData = [
     aptAmount: '0',
     gas: '0.0034433',
   },
-  {
-    time: '00:30',
-    type: '코인 전송',
-    address: '0x8765...4321',
-    aptAmount: '0.2222',
-    gas: '0.0032265',
-  },
 ];
 
 const transactionElementComponent = ({

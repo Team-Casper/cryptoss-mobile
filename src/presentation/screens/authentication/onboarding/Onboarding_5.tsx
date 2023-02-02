@@ -34,7 +34,6 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
           loop={false}
         />
       )}
-
       <Text
         style={[
           _globalStyles.confirmButtonText,
