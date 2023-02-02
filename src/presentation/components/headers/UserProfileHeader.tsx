@@ -35,11 +35,6 @@ export const UserProfileHeader = ({
   const [chosenNftIdx, setChosenNftIdx] = useState(-2); // 초기값
 
   useEffect(() => {
-    /*
-    if (!currentProfilePictureImageUrl) {
-      setCurrentProfilePictureImageUrl(finalSavedProfilePictureImageUrl);
-    }
-    */
     if (chosenNftIdx === -2) {
       const indexOfCurrenProfileNft = MyNftList.indexOf(
         finalSavedProfilePictureImageUrl,
@@ -67,7 +62,7 @@ export const UserProfileHeader = ({
               width: 165 * height,
               borderRadius: 18 * height,
             }}
-            resizeMode="stretch"
+            resizeMode="cover" // "stretch"
           />
           <View style={_styles.myNftListOuterContainer}>
             <Text
@@ -114,7 +109,7 @@ export const UserProfileHeader = ({
                     }}
                     style={_styles.nftImageElementContainer}>
                     <FastImage
-                      resizeMode="stretch"
+                      resizeMode="cover" //"stretch"
                       style={[
                         {
                           width: 58 * height,
