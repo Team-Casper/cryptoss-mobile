@@ -15,6 +15,8 @@ import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
 import CountDown from 'react-native-countdown-component';
 import {authenticatePhone} from 'api/auth';
 import { LinearGradient } from 'expo-linear-gradient';
+import { storeData } from '@utils/AsyncStorage';
+import { USER_PHONE_NUM_ASYNC_STORAGE_KEY } from '@utils/aptos/core/constants';
 
 export const Onboarding_3 = ({
   navigation,
@@ -28,6 +30,14 @@ export const Onboarding_3 = ({
   const [isTextInputFocused, setIsTextInputFocused] = useState(false);
   //const [isCountDownDisplayed, setIsCountDownDisplayed] = useState(true);
 
+  const storeUserPhoneNum = async() => {
+    await storeData(USER_PHONE_NUM_ASYNC_STORAGE_KEY, phoneNumber)
+  }
+  
+  useEffect(() => {
+    storeUserPhoneNum()
+  }, [])
+  
   return (
     <HideKeyboard>
       <View

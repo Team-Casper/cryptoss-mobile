@@ -4,11 +4,12 @@ import {colors, height, width} from '@utils/index';
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
-import {storeData} from '@utils/AsyncStorage';
+import {getData, storeData} from '@utils/AsyncStorage';
 import useWalletState from 'hooks/useWalletState';
 import { FaucetClient } from 'aptos';
 import { createNewAccount } from '@utils/aptos/account';
-import { FAUCET_URL, NODE_URL } from '@utils/aptos/core/constants';
+import { FAUCET_URL, NODE_URL, USER_PHONE_NUM_ASYNC_STORAGE_KEY } from '@utils/aptos/core/constants';
+import { registerAccountAddress } from 'api/auth';
 
 export const Onboarding_5 = ({navigation}: {navigation: any}) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
@@ -27,10 +28,11 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
     const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
     const account = createNewAccount();
     await faucetClient.fundAccount(account.address(), 0);
-    updateWalletState({ aptosAccountState: account });
-    console.log(privateKeyHex)
-    console.log(publicKeyHex)
+    await updateWalletState({ aptosAccountState: account });
+    const phoneNum = await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY)
+    console.log(phoneNum)
     console.log(address)
+    // await registerAccountAddress(phoneNum, address)
     // setIsAccountBeingCreated(false);
   };
 

@@ -37,7 +37,6 @@ const authenticatePhone = async (
 
     return res.status === 201;
   } catch (error: any) {
-    console.log(error);
     if (error) {
       Alert.alert('인증 번호를 다시 요청 해주세요.');
     }
@@ -47,19 +46,20 @@ const authenticatePhone = async (
 /**
  * Request to register account address to cryptoss account.
  */
-const registerAccountAddress = async ({
-  _phone_number,
-  _address,
-}: {
-  _phone_number: string;
-  _address: string;
-}) => {
+const registerAccountAddress = async (
+  _phone_number: string,
+  _address: string | undefined
+) => {
   try {
     const res = await axios.post(`${SERVER_ENDPOINT}/account/address`, {
       phone_number: _phone_number,
       address: _address,
     });
-  } catch (error) {}
+  } catch (error) {
+    if (error) {
+      Alert.alert('계정 등록이 실패하였습니다.');
+    }
+  }
 };
 
 /**

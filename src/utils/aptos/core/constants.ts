@@ -4,6 +4,7 @@
 export const SERVER_ENDPOINT = 'http://54.180.99.46:8080';
 export const KEY_LENGTH: number = 64;
 export const WALLET_STATE_ASYNC_STORAGE_KEY = 'aptosWalletState';
+export const USER_PHONE_NUM_ASYNC_STORAGE_KEY = 'phoneNumber';
 
 export const STATIC_GAS_AMOUNT = 150;
 
