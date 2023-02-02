@@ -17,6 +17,22 @@ export const SampleNft11 = require('./sample_nft_11.png');
 export const SampleNft12 = require('./sample_nft_12.png');
 export const SampleNft13 = require('./sample_nft_13.png');
 export const SampleNft14 = require('./sample_nft_14.png');
+export const SampleProfilePictureImgSrcList = [
+  SampleNft1,
+  SampleNft2,
+  SampleNft3,
+  SampleNft4,
+  SampleNft5,
+  SampleNft6,
+  SampleNft7,
+  SampleNft8,
+  SampleNft9,
+  SampleNft10,
+  SampleNft11,
+  SampleNft12,
+  SampleNft13,
+  SampleNft14,
+];
 
 export const MyNft1 = require('./my_nft_1.png');
 export const MyNft2 = require('./my_nft_2.png');

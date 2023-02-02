@@ -16,6 +16,7 @@ import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {NftInfo} from '@utils/index';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
 import {MyNftList} from '@assets/images';
+import FastImage from 'react-native-fast-image';
 
 export const UserProfileHeader = ({
   hideHoldingAPTAmountDisplay,
@@ -59,7 +60,7 @@ export const UserProfileHeader = ({
               style={{left: 44 * width, position: 'absolute'}}
             />
           </View>
-          <Image
+          <FastImage
             source={currentProfilePictureImageUrl}
             style={{
               height: 165 * height,
@@ -112,7 +113,7 @@ export const UserProfileHeader = ({
                       setCurrentProfilePictureImageUrl(val);
                     }}
                     style={_styles.nftImageElementContainer}>
-                    <Image
+                    <FastImage
                       resizeMode="stretch"
                       style={[
                         {
@@ -175,7 +176,7 @@ export const UserProfileHeader = ({
           }}
           activeOpacity={1}
           style={_styles.profilePictureContainer}>
-          <Image
+          <FastImage
             style={{width: 63 * height, height: '100%'}}
             source={finalSavedProfilePictureImageUrl}
           />

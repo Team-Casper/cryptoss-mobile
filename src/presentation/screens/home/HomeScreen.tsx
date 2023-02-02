@@ -23,43 +23,13 @@ import UserDefaultProfileImage from '@assets/images/user_default_profile_image.s
 import {_globalStyles} from '@screens/styles';
 import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
-import {
-  SampleNft1,
-  SampleNft2,
-  SampleNft3,
-  SampleNft4,
-  SampleNft5,
-  SampleNft6,
-  SampleNft7,
-  SampleNft8,
-  SampleNft9,
-  SampleNft10,
-  SampleNft11,
-  SampleNft12,
-  SampleNft13,
-  SampleNft14,
-} from '@assets/images';
+import {SampleProfilePictureImgSrcList} from '@assets/images';
+import FastImage from 'react-native-fast-image';
 
-const SampleProfilePictureImgSrcList = [
-  SampleNft1,
-  SampleNft2,
-  SampleNft3,
-  SampleNft4,
-  SampleNft5,
-  SampleNft6,
-  SampleNft7,
-  SampleNft8,
-  SampleNft9,
-  SampleNft10,
-  SampleNft11,
-  SampleNft12,
-  SampleNft13,
-  SampleNft14,
-];
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 14;
   return (
-    <Image
+    <FastImage
       source={SampleProfilePictureImgSrcList[newIdx]}
       style={{width: 63 * height, height: 63 * height}}
     />

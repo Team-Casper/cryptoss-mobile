@@ -15,6 +15,7 @@ import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 import {MyNftList} from '@assets/images';
 import {CoinInfo, NftInfo} from '@utils/index';
+import FastImage from 'react-native-fast-image';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([
@@ -86,7 +87,7 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
                     borderTopWidth: 0,
                   },
                 ]}>
-                <Image
+                <FastImage
                   source={{uri: val.imageUrl}}
                   style={{
                     width: 50 * height,
@@ -157,7 +158,7 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
                 <View
                   key={imgSrc + idx}
                   style={[_styles.nftImageContainer, {overflow: 'hidden'}]}>
-                  <Image
+                  <FastImage
                     resizeMode="cover" // "contain" // "contain"
                     style={_styles.nftImageStyle}
                     source={imgSrc}
