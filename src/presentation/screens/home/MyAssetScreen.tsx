@@ -11,20 +11,13 @@ import {
   View,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import {headerComponent} from './HomeScreen';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
-
+import {MyNftList} from '@assets/images';
 import {CoinInfo, NftInfo} from '@utils/index';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([
-    {
-      coinName: 'APT',
-      coinAmount: 100000,
-      imageUrl:
-        'https://assets.coingecko.com/coins/images/26455/large/aptos_round.png?1666839629',
-    },
     {
       coinName: 'USDT',
       coinAmount: 301111,
@@ -48,35 +41,6 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
       coinAmount: 5000,
       imageUrl:
         'https://s3.amazonaws.com/token-icons/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
-    },
-  ]);
-  const [holdingNftList, setHoldingNftList] = useState<NftInfo[]>([
-    {
-      imageUrl:
-        'https://www.finder.com/finder-us/wp-uploads/2022/03/Larva-Labs_supplied_390x440.png',
-    },
-    {
-      imageUrl:
-        'https://lh3.googleusercontent.com/yfRQyA1UzkKyB_vTrLkobf6xGnuNcKCRgezt7mcsxlpJU-7erg6kCrII_HgzKLchuBV0ODba_EH_BGvmu-TEijrigeXCz0eCqMyPf-k9hBCnx64QgEfHghRFZmH0vgkAHoXo3NPB8C3OaYCcc5xnNTs',
-    },
-    {
-      imageUrl:
-        'https://pbs.twimg.com/profile_images/1562384922241024003/ugOUrz2R_400x400.jpg',
-    },
-    {
-      imageUrl:
-        'https://pbs.twimg.com/media/FlOUXzKXwAEaHPD?format=jpg&name=large',
-    },
-    {
-      imageUrl: 'https://pbs.twimg.com/media/FnK5eHLWIAEJ9Dp.jpg',
-    },
-    {
-      imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_2ZIC6d9fELYvZc5rwNeG8O347S5KXijDdC46xOomTpvKP_2qSpf1nYj24PEHQYCAJk&usqp=CAU',
-    },
-    {
-      imageUrl:
-        'https://lh3.googleusercontent.com/y60KH8wArPNVy4kslnWZFX_rDIxxPNmMLsWTwz9GiGnfCmygzsgk2ZItVZ74vBPHyqhT6nzSiWZU8TxFJEo8FN20wtnEPkGDrNksVfP2wmz66xRANzAAdOy11VBosgRmTykIsBMs',
     },
   ]);
   const [showArrow, setShowArrow] = useState(true);
@@ -188,13 +152,15 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
               height: 223 * height,
               alignItems: 'center',
             }}>
-            {holdingNftList.map((nftInfo: NftInfo, idx) => {
+            {MyNftList.map((imgSrc: any, idx) => {
               return (
-                <View key={nftInfo.imageUrl} style={_styles.nftImageContainer}>
+                <View
+                  key={imgSrc + idx}
+                  style={[_styles.nftImageContainer, {overflow: 'hidden'}]}>
                   <Image
-                    resizeMode="contain" // "contain"
+                    resizeMode="cover" // "contain" // "contain"
                     style={_styles.nftImageStyle}
-                    source={{uri: nftInfo.imageUrl}}
+                    source={imgSrc}
                   />
                 </View>
               );
@@ -237,18 +203,18 @@ const _styles = StyleSheet.create({
     overflow: 'visible',
   },
   nftImageContainer: {
-    width: 140 * height,
-    height: 190 * height,
+    width: 130 * height,
+    height: 160 * height,
     borderRadius: 8 * height,
     backgroundColor: '#adb3b3',
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 15 * height,
+    marginRight: 16 * height,
     zIndex: 100,
   },
   nftImageStyle: {
     width: '100%',
-    height: '100%',
+    height: 160 * height,
   },
   coinListElementContainer: {
     width: '100%',

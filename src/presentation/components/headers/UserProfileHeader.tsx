@@ -15,6 +15,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {NftInfo} from '@utils/index';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
+import {MyNftList} from '@assets/images';
 
 export const UserProfileHeader = ({
   hideHoldingAPTAmountDisplay,
@@ -27,50 +28,21 @@ export const UserProfileHeader = ({
   const [
     finalSavedProfilePictureImageUrl,
     setFinalSavedProfilePictureImageUrl,
-  ] = useState(
-    'https://pbs.twimg.com/profile_images/1562384922241024003/ugOUrz2R_400x400.jpg',
-  );
+  ] = useState(MyNftList[0]);
   const [currentProfilePictureImageUrl, setCurrentProfilePictureImageUrl] =
-    useState('');
+    useState(MyNftList[0]);
   const [chosenNftIdx, setChosenNftIdx] = useState(-2); // 초기값
-  const [holdingNftList, setHoldingNftList] = useState<NftInfo[]>([
-    {
-      imageUrl:
-        'https://www.finder.com/finder-us/wp-uploads/2022/03/Larva-Labs_supplied_390x440.png',
-    },
-    {
-      imageUrl:
-        'https://lh3.googleusercontent.com/yfRQyA1UzkKyB_vTrLkobf6xGnuNcKCRgezt7mcsxlpJU-7erg6kCrII_HgzKLchuBV0ODba_EH_BGvmu-TEijrigeXCz0eCqMyPf-k9hBCnx64QgEfHghRFZmH0vgkAHoXo3NPB8C3OaYCcc5xnNTs',
-    },
-    {
-      imageUrl:
-        'https://pbs.twimg.com/profile_images/1562384922241024003/ugOUrz2R_400x400.jpg',
-    },
-    {
-      imageUrl:
-        'https://pbs.twimg.com/media/FlOUXzKXwAEaHPD?format=jpg&name=large',
-    },
-    {
-      imageUrl: 'https://pbs.twimg.com/media/FnK5eHLWIAEJ9Dp.jpg',
-    },
-    {
-      imageUrl:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSv_2ZIC6d9fELYvZc5rwNeG8O347S5KXijDdC46xOomTpvKP_2qSpf1nYj24PEHQYCAJk&usqp=CAU',
-    },
-    {
-      imageUrl:
-        'https://lh3.googleusercontent.com/y60KH8wArPNVy4kslnWZFX_rDIxxPNmMLsWTwz9GiGnfCmygzsgk2ZItVZ74vBPHyqhT6nzSiWZU8TxFJEo8FN20wtnEPkGDrNksVfP2wmz66xRANzAAdOy11VBosgRmTykIsBMs',
-    },
-  ]);
 
   useEffect(() => {
-    if (currentProfilePictureImageUrl.length <= 0) {
+    /*
+    if (!currentProfilePictureImageUrl) {
       setCurrentProfilePictureImageUrl(finalSavedProfilePictureImageUrl);
     }
+    */
     if (chosenNftIdx === -2) {
-      const indexOfCurrenProfileNft = holdingNftList
-        .map((val: NftInfo) => val.imageUrl)
-        .indexOf(finalSavedProfilePictureImageUrl);
+      const indexOfCurrenProfileNft = MyNftList.indexOf(
+        finalSavedProfilePictureImageUrl,
+      );
       setChosenNftIdx(indexOfCurrenProfileNft);
     }
   }, []);
@@ -88,7 +60,7 @@ export const UserProfileHeader = ({
             />
           </View>
           <Image
-            source={{uri: currentProfilePictureImageUrl}}
+            source={currentProfilePictureImageUrl}
             style={{
               height: 165 * height,
               width: 165 * height,
@@ -130,14 +102,14 @@ export const UserProfileHeader = ({
               style={{
                 height: 58 * height,
               }}>
-              {holdingNftList.map((nftInfo: NftInfo, idx) => {
+              {MyNftList.map((val: any, idx) => {
                 return (
                   <TouchableOpacity
-                    key={idx}
+                    key={idx + val}
                     activeOpacity={1}
                     onPress={() => {
                       setChosenNftIdx(idx);
-                      setCurrentProfilePictureImageUrl(nftInfo.imageUrl);
+                      setCurrentProfilePictureImageUrl(val);
                     }}
                     style={_styles.nftImageElementContainer}>
                     <Image
@@ -153,7 +125,7 @@ export const UserProfileHeader = ({
                           borderColor: colors.gray_1,
                         },
                       ]}
-                      source={{uri: nftInfo.imageUrl}}
+                      source={val}
                     />
                   </TouchableOpacity>
                 );
@@ -189,7 +161,7 @@ export const UserProfileHeader = ({
         </View>
       </View>
     );
-  }, [currentProfilePictureImageUrl, chosenNftIdx, holdingNftList, showArrow]);
+  }, [currentProfilePictureImageUrl, chosenNftIdx, showArrow]);
 
   return (
     <React.Fragment>
@@ -205,7 +177,7 @@ export const UserProfileHeader = ({
           style={_styles.profilePictureContainer}>
           <Image
             style={{width: 63 * height, height: '100%'}}
-            source={{uri: finalSavedProfilePictureImageUrl}}
+            source={finalSavedProfilePictureImageUrl}
           />
         </TouchableOpacity>
         <TouchableOpacity
