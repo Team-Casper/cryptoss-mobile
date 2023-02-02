@@ -1,8 +1,6 @@
+import { SERVER_ENDPOINT } from '@utils/aptos/core/constants';
 import axios from 'axios';
 import {Alert} from 'react-native';
-// import {ENV_SERVER_ENDPOINT} from '@env';
-
-const ENV_SERVER_ENDPOINT = 'http://54.180.99.46:8080';
 
 /**
  * Request to authenticate phone number. If phone number is valid, a 6-digit verification code expired in 5 minutes will be sent via sms. If you want to receive a newly generated verification code (whatever the reason is), you can request again, and then the previous code will be expired.
@@ -13,7 +11,7 @@ const requestForPhoneAuthentication = async (
   _teleco_code: string,
 ) => {
   try {
-    const res = await axios.post(`${ENV_SERVER_ENDPOINT}/verification/start`, {
+    const res = await axios.post(`${SERVER_ENDPOINT}/verification/start`, {
       nickname: _nickname,
       phone_number: _phone_number,
       teleco_code: _teleco_code,
@@ -32,7 +30,7 @@ const authenticatePhone = async (
   _verification_code: string,
 ) => {
   try {
-    const res = await axios.post(`${ENV_SERVER_ENDPOINT}/verification/check`, {
+    const res = await axios.post(`${SERVER_ENDPOINT}/verification/check`, {
       phone_number: _phone_number,
       verification_code: _verification_code,
     });
@@ -57,7 +55,7 @@ const registerAccountAddress = async ({
   _address: string;
 }) => {
   try {
-    const res = await axios.post(`${ENV_SERVER_ENDPOINT}/account/address`, {
+    const res = await axios.post(`${SERVER_ENDPOINT}/account/address`, {
       phone_number: _phone_number,
       address: _address,
     });
@@ -74,7 +72,7 @@ const getAccountByPhoneNumber = async ({
 }) => {
   try {
     const res = await axios.get(
-      `${ENV_SERVER_ENDPOINT}/account/${_phone_number}`,
+      `${SERVER_ENDPOINT}/account/${_phone_number}`,
     );
   } catch (error) {}
 };
@@ -88,7 +86,7 @@ const setProfilePictureWithNFT = async ({
   _phone_number: string;
 }) => {
   try {
-    const res = await axios.post(`${ENV_SERVER_ENDPOINT}/profile`, {
+    const res = await axios.post(`${SERVER_ENDPOINT}/profile`, {
       phone_number: _phone_number,
     });
   } catch (error) {}
@@ -99,7 +97,7 @@ const setProfilePictureWithNFT = async ({
  */
 const resetAccount = async ({_phone_number}: {_phone_number: string}) => {
   try {
-    const res = await axios.post(`${ENV_SERVER_ENDPOINT}/reset`, {
+    const res = await axios.post(`${SERVER_ENDPOINT}/reset`, {
       phone_number: _phone_number,
     });
   } catch (error) {}

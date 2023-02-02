@@ -24,6 +24,7 @@ import {_globalStyles} from '@screens/styles';
 // import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
 import {UserProfileHeader} from '@components/headers/UserProfileHeader';
 
+
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
   switch (newIdx) {
@@ -154,6 +155,7 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
       setFilteredContactLists(contactLists);
     }
   }, [searchString]);
+
 
   const searchComponent = useMemo(() => {
     return (

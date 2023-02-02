@@ -4,7 +4,7 @@
 import { useState, useCallback } from 'react';
 import constate from 'constate';
 import { getAptosAccountState, getAsyncStorageState } from '../utils/aptos/account';
-import { WALLET_STATE_LOCAL_STORAGE_KEY } from '../utils/aptos/core/constants';
+import { WALLET_STATE_ASYNC_STORAGE_KEY } from '../utils/aptos/core/constants';
 import { AptosAccountState, AsyncStorageState } from '../utils/aptos/core/types';
 import { removeData, storeData } from '@utils/AsyncStorage';
 
@@ -28,7 +28,7 @@ export default function useWalletState() {
       const privateKeyObject = aptosAccountState?.toPrivateKeyObject();
       setAptosAccount(aptosAccountState);
       setAsyncStorageState({ aptosAccountObject: privateKeyObject });
-      await storeData(WALLET_STATE_LOCAL_STORAGE_KEY, JSON.stringify(privateKeyObject));
+      await storeData(WALLET_STATE_ASYNC_STORAGE_KEY, JSON.stringify(privateKeyObject));
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -38,7 +38,7 @@ export default function useWalletState() {
   const signOut = useCallback(async() => {
     setAptosAccount(undefined);
     setAsyncStorageState({ aptosAccountObject: undefined });
-    await removeData(WALLET_STATE_LOCAL_STORAGE_KEY);
+    await removeData(WALLET_STATE_ASYNC_STORAGE_KEY);
   }, []);
 
   return {

@@ -14,6 +14,42 @@ import {_globalStyles} from '@screens/styles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {NftInfo} from '@utils/index';
+import {getAptosAccountState} from '../../../utils/aptos/account'
+import { AptosClient, CoinClient } from 'aptos';
+import { NODE_URL } from '@utils/aptos/core/constants';
+import numeral from 'numeral';
+
+interface GetAccountResourcesProps {
+  address?: string;
+  nodeUrl?: string;
+}
+
+export const getAccountResources = async ({
+  nodeUrl = NODE_URL,
+  address,
+}: GetAccountResourcesProps) => {
+  const client = new AptosClient(nodeUrl);
+  if (address) {
+    const accountResources = await client.getAccountResources(
+      address,
+    );
+    return accountResources;
+  }
+  return undefined;
+};
+
+const getAccountBalanceFromAccountResources = (
+  accountResources: any,
+): Number => {
+  if (accountResources) {
+    const accountResource = (accountResources) ? accountResources?.find((r:any) => r.type === '0x1::Coin::CoinStore<0x1::TestCoin::TestCoin>') : undefined;
+    const tokenBalance = (accountResource)
+      ? (accountResource.data as { coin: { value: string } }).coin.value
+      : undefined;
+    return Number(tokenBalance);
+  }
+  return -1;
+};
 
 export const UserProfileHeader = ({
   hideHoldingAPTAmountDisplay,
@@ -72,6 +108,33 @@ export const UserProfileHeader = ({
       setChosenNftIdx(indexOfCurrenProfileNft);
     }
   }, []);
+
+
+  const [tokenBalanceString, setTokenBalanceString] = useState('')
+
+  useEffect(() => {
+    getBalance();
+  }, [])
+
+  const getBalance = async () => {
+    const account = await getAptosAccountState();
+    const accountResources = await getAccountResources({
+      address: account?.accountAddress?.hexString,
+      nodeUrl: NODE_URL,
+    });
+    console.log(account)
+
+
+    const accountResource = (accountResources)
+    ? accountResources?.find((r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>")
+    : undefined;
+    const tokenBalance = (accountResource)
+    ? (accountResource.data as { coin: { value: string } }).coin.value
+    : undefined;
+    setTokenBalanceString(await numeral(tokenBalance).format('0,0.0000'));
+  }
+  
+
 
   const profileEditModal = useMemo(() => {
     return (
@@ -220,7 +283,7 @@ export const UserProfileHeader = ({
                 lineHeight: 0,
               },
             ]}>
-            10,000
+            {tokenBalanceString}
           </Text>
         </View>
       </View>

@@ -23,10 +23,14 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
 
   const createAccountOnClick = async () => {
     // setIsAccountBeingCreated(true);
+    // const client = new AptosClient(NODE_URL);
     const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
     const account = createNewAccount();
     await faucetClient.fundAccount(account.address(), 0);
     updateWalletState({ aptosAccountState: account });
+    console.log(privateKeyHex)
+    console.log(publicKeyHex)
+    console.log(address)
     // setIsAccountBeingCreated(false);
   };
 
@@ -74,7 +78,7 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
         }}
         buttonWidth={260 * width}
         onPress={async () => {
-          createAccountOnClick();
+          await createAccountOnClick();
           await storeData('onboarding', 'true');
           navigation.navigate('HomeScreen');
         }}

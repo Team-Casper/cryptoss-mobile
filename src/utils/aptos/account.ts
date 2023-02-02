@@ -4,7 +4,7 @@
 import { getData } from '@utils/AsyncStorage';
 import { AptosAccount, AptosAccountObject } from 'aptos';
 import { Buffer } from 'buffer';
-import { KEY_LENGTH, WALLET_STATE_LOCAL_STORAGE_KEY } from './core/constants';
+import { KEY_LENGTH, WALLET_STATE_ASYNC_STORAGE_KEY } from './core/constants';
 import {
   AptosAccountState, AsyncStorageState, Result, err, ok,
 } from './core/types';
@@ -32,7 +32,9 @@ export function createNewAccount(): AptosAccount {
 
 export async function getAsyncStorageState(): Promise<AsyncStorageState | null> {
   // Get from local storage by key
-  const item = await getData(WALLET_STATE_LOCAL_STORAGE_KEY);
+  const item = await getData(WALLET_STATE_ASYNC_STORAGE_KEY);
+  // console.log("getData")
+  // console.log(item)
   if (item) {
     const accountObject: AptosAccountObject = JSON.parse(item);
     return { aptosAccountObject: accountObject };
@@ -40,8 +42,8 @@ export async function getAsyncStorageState(): Promise<AsyncStorageState | null> 
   return null;
 }
 
-export function getAptosAccountState(): AptosAccountState {
-  const asyncStorage = getAsyncStorageState();
+export async function getAptosAccountState(): Promise<AptosAccountState | null> {
+  const asyncStorage = await getAsyncStorageState();
   if (asyncStorage) {
     const { aptosAccountObject } :any = asyncStorage;
     return aptosAccountObject ? AptosAccount.fromAptosAccountObject(aptosAccountObject) : undefined;
