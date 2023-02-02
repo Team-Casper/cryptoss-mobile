@@ -19,11 +19,36 @@ import {CoinInfo, NftInfo} from '@utils/index';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([
-    {coinName: 'BTC', coinAmount: 100000},
-    {coinName: 'ETH', coinAmount: 301111},
-    {coinName: 'USDC', coinAmount: 999},
-    {coinName: 'BNB', coinAmount: 5000},
-    {coinName: 'XRP', coinAmount: 10235},
+    {
+      coinName: 'APT',
+      coinAmount: 100000,
+      imageUrl:
+        'https://assets.coingecko.com/coins/images/26455/large/aptos_round.png?1666839629',
+    },
+    {
+      coinName: 'USDT',
+      coinAmount: 301111,
+      imageUrl:
+        'https://www.blockchaincenter.net/wp-content/uploads/logos/usdt.png',
+    },
+    {
+      coinName: 'USDC',
+      coinAmount: 12013,
+      imageUrl:
+        'https://www.blockchaincenter.net/wp-content/uploads/logos/usdc.png',
+    },
+    {
+      coinName: 'WBTC',
+      coinAmount: 999,
+      imageUrl:
+        'https://www.blockchaincenter.net/wp-content/uploads/logos/btc.png',
+    },
+    {
+      coinName: 'WETH',
+      coinAmount: 5000,
+      imageUrl:
+        'https://s3.amazonaws.com/token-icons/0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2.png',
+    },
   ]);
   const [holdingNftList, setHoldingNftList] = useState<NftInfo[]>([
     {
@@ -97,11 +122,12 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
                     borderTopWidth: 0,
                   },
                 ]}>
-                <View
+                <Image
+                  source={{uri: val.imageUrl}}
                   style={{
                     width: 50 * height,
                     height: 50 * height,
-                    backgroundColor: colors.gray_3,
+                    //backgroundColor: colors.gray_3,
                     borderRadius: 50 * height,
                   }}
                 />
