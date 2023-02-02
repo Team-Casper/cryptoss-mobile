@@ -24,7 +24,6 @@ export const Onboarding_3 = ({
   const {phoneNumber} = route.params;
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isTextInputFocused, setIsTextInputFocused] = useState(false);
-  //const [isCountDownDisplayed, setIsCountDownDisplayed] = useState(true);
 
   return (
     <HideKeyboard>
@@ -67,32 +66,29 @@ export const Onboarding_3 = ({
         </Text>
         <Text style={_globalStyles.mainText}>인증번호를 입력해주세요</Text>
         <View style={{marginTop: 10 * height}}>
-          <TextInput
-            style={[
-              _globalStyles.textInputStyle,
-              {
-                borderColor: isTextInputFocused
-                  ? colors.consentColor // focusedBorderColor
-                  : colors.blurredBorderColor,
-              },
-            ]}
-            onFocus={() => setIsTextInputFocused(true)}
-            onBlur={() => setIsTextInputFocused(false)}
-            onChangeText={setCertificationNumber}
-            value={certificationNumber}
-            keyboardType={'phone-pad'}
-            placeholder={'6자리 숫자'}
-            placeholderTextColor={colors.blurredTextColor}
-            maxLength={6}
-            textContentType={'oneTimeCode'}
-          />
-          {/*isCountDownDisplayed && (
+          <View style={{flexDirection: 'row'}}>
+            <TextInput
+              style={[
+                _globalStyles.textInputStyle,
+                {
+                  borderColor: isTextInputFocused
+                    ? colors.consentColor
+                    : colors.blurredBorderColor,
+                },
+              ]}
+              onFocus={() => setIsTextInputFocused(true)}
+              onBlur={() => setIsTextInputFocused(false)}
+              onChangeText={setCertificationNumber}
+              value={certificationNumber}
+              keyboardType={'phone-pad'}
+              placeholder={'6자리 숫자'}
+              placeholderTextColor={colors.blurredTextColor}
+              maxLength={6}
+              textContentType={'oneTimeCode'}
+            />
             <CountDown
               size={36}
-              until={18}
-              onFinish={() => {
-                //setIsCountDownDisplayed(false);
-              }}
+              until={180} // 3분
               timeToShow={['M', 'S']}
               digitStyle={{
                 backgroundColor: 'transparent',
@@ -103,10 +99,15 @@ export const Onboarding_3 = ({
               timeLabels={{}}
               separatorStyle={_styles.timerTextStyle}
               digitTxtStyle={_styles.timerTextStyle}
-              style={{display: isCountDownDisplayed ? 'flex' : 'none'}}
+              style={{
+                position: 'absolute',
+                zIndex: 2,
+                top: 26 * height,
+                right: 20 * width,
+                display: 'flex',
+              }}
             />
-            )*/}
-
+          </View>
           <View
             style={{
               marginTop: 45 * height,
