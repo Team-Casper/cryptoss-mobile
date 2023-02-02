@@ -15,6 +15,9 @@ import Icon_Close from '@assets/icons/icon_close.svg';
 import Icon_Check from '@assets/icons/icon_check.svg';
 import Icon_View_More from '@assets/icons/icon_view_more.svg';
 import {requestForPhoneAuthentication} from 'api/auth';
+import {storeData} from '@utils/AsyncStorage';
+import {onboardingUserState} from 'store/onboardingUserState';
+import {useRecoilState} from 'recoil';
 // import {useRecoilState} from 'recoil';
 // import {phoneVerificationState} from 'store/phoneVerificationState';
 
@@ -33,6 +36,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   // const [phoneVerification, setPhoneVerification] = useRecoilState(
   //   phoneVerificationState,
   // );
+  const [userState, setUserState] = useRecoilState(onboardingUserState);
 
   const isUserInfoFilledIn = () => {
     return (
@@ -256,6 +260,8 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
               phoneNumber,
               mobileCarrier,
             );
+            await storeData('nickname', nickName);
+            setUserState({nickname: nickName});
             navigation.navigate('Onboarding_3', {phoneNumber: phoneNumber});
           }}
           buttonText={'확인'}

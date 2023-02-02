@@ -14,10 +14,11 @@ import {_globalStyles} from '@screens/styles';
 import {ScrollView} from 'react-native-gesture-handler';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
 import {NftInfo} from '@utils/index';
-import {getAptosAccountState} from '../../../utils/aptos/account'
-import { AptosClient, CoinClient } from 'aptos';
-import { NODE_URL } from '@utils/aptos/core/constants';
+import {getAptosAccountState} from '../../../utils/aptos/account';
+import {AptosClient, CoinClient} from 'aptos';
+import {NODE_URL} from '@utils/aptos/core/constants';
 import numeral from 'numeral';
+import {getData} from '@utils/AsyncStorage';
 
 interface GetAccountResourcesProps {
   address?: string;
@@ -30,9 +31,7 @@ export const getAccountResources = async ({
 }: GetAccountResourcesProps) => {
   const client = new AptosClient(nodeUrl);
   if (address) {
-    const accountResources = await client.getAccountResources(
-      address,
-    );
+    const accountResources = await client.getAccountResources(address);
     return accountResources;
   }
   return undefined;
@@ -42,9 +41,14 @@ const getAccountBalanceFromAccountResources = (
   accountResources: any,
 ): Number => {
   if (accountResources) {
-    const accountResource = (accountResources) ? accountResources?.find((r:any) => r.type === '0x1::Coin::CoinStore<0x1::TestCoin::TestCoin>') : undefined;
-    const tokenBalance = (accountResource)
-      ? (accountResource.data as { coin: { value: string } }).coin.value
+    const accountResource = accountResources
+      ? accountResources?.find(
+          (r: any) =>
+            r.type === '0x1::Coin::CoinStore<0x1::TestCoin::TestCoin>',
+        )
+      : undefined;
+    const tokenBalance = accountResource
+      ? (accountResource.data as {coin: {value: string}}).coin.value
       : undefined;
     return Number(tokenBalance);
   }
@@ -109,32 +113,37 @@ export const UserProfileHeader = ({
     }
   }, []);
 
-
-  const [tokenBalanceString, setTokenBalanceString] = useState('')
+  const [tokenBalanceString, setTokenBalanceString] = useState('');
 
   useEffect(() => {
     getBalance();
-  }, [])
+  }, []);
+
+  const [accountAddress, setAccountAddress] = useState<any>();
+  const [nickname, setNickname] = useState<any>();
 
   const getBalance = async () => {
+    const nickname = await getData('nickname');
+    setNickname(nickname);
     const account = await getAptosAccountState();
+    setAccountAddress(account?.address().hex());
     const accountResources = await getAccountResources({
-      address: account?.accountAddress?.hexString,
+      address: account?.address().hex(),
       nodeUrl: NODE_URL,
     });
-    console.log(account)
 
-
-    const accountResource = (accountResources)
-    ? accountResources?.find((r) => r.type === "0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>")
-    : undefined;
-    const tokenBalance = (accountResource)
-    ? (accountResource.data as { coin: { value: string } }).coin.value
-    : undefined;
-    setTokenBalanceString(await numeral(tokenBalance).format('0,0.0000'));
-  }
-  
-
+    const accountResource = accountResources
+      ? accountResources?.find(
+          r => r.type === '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>',
+        )
+      : undefined;
+    const tokenBalance = accountResource
+      ? (accountResource.data as {coin: {value: string}}).coin.value
+      : undefined;
+    setTokenBalanceString(
+      await numeral(tokenBalance).divide(100000000).format('0,0.0000'),
+    );
+  };
 
   const profileEditModal = useMemo(() => {
     return (
@@ -248,12 +257,16 @@ export const UserProfileHeader = ({
           activeOpacity={1}
           style={_styles.userNameConatiner}>
           <Text style={[_globalStyles.confirmButtonText, {color: 'black'}]}>
-            김블록
+            {nickname || '김블록'}
           </Text>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Text
               style={[_globalStyles.subMiniText, {marginRight: 3 * height}]}>
-              0x00...1234
+              {(accountAddress &&
+                accountAddress.slice(0, 6) +
+                  '....' +
+                  accountAddress.slice(62, 66)) ||
+                '0x0000...0000'}
             </Text>
             <Icon_Copy
               fill={colors.blurredTextColor}

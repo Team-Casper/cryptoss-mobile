@@ -1,12 +1,16 @@
 // Copyright (c) Aptos
 // SPDX-License-Identifier: Apache-2.0
 
-import { getData } from '@utils/AsyncStorage';
-import { AptosAccount, AptosAccountObject } from 'aptos';
-import { Buffer } from 'buffer';
-import { KEY_LENGTH, WALLET_STATE_ASYNC_STORAGE_KEY } from './core/constants';
+import {getData} from '@utils/AsyncStorage';
+import {AptosAccount, AptosAccountObject} from 'aptos';
+import {Buffer} from 'buffer';
+import {KEY_LENGTH, WALLET_STATE_ASYNC_STORAGE_KEY} from './core/constants';
 import {
-  AptosAccountState, AsyncStorageState, Result, err, ok,
+  AptosAccountState,
+  AsyncStorageState,
+  Result,
+  err,
+  ok,
 } from './core/types';
 
 export function loginAccount(key: string): Result<AptosAccount, Error> {
@@ -37,7 +41,7 @@ export async function getAsyncStorageState(): Promise<AsyncStorageState | null> 
   // console.log(item)
   if (item) {
     const accountObject: AptosAccountObject = JSON.parse(item);
-    return { aptosAccountObject: accountObject };
+    return {aptosAccountObject: accountObject};
   }
   return null;
 }
@@ -45,8 +49,10 @@ export async function getAsyncStorageState(): Promise<AsyncStorageState | null> 
 export async function getAptosAccountState(): Promise<AptosAccountState | null> {
   const asyncStorage = await getAsyncStorageState();
   if (asyncStorage) {
-    const { aptosAccountObject } :any = asyncStorage;
-    return aptosAccountObject ? AptosAccount.fromAptosAccountObject(aptosAccountObject) : undefined;
+    const {aptosAccountObject}: any = asyncStorage;
+    return aptosAccountObject
+      ? AptosAccount.fromAptosAccountObject(aptosAccountObject)
+      : undefined;
   }
   return undefined;
 }

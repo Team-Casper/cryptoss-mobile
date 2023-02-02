@@ -6,21 +6,27 @@ import {StyleSheet, Text, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import {getData, storeData} from '@utils/AsyncStorage';
 import useWalletState from 'hooks/useWalletState';
-import { FaucetClient } from 'aptos';
-import { createNewAccount } from '@utils/aptos/account';
-import { FAUCET_URL, NODE_URL, USER_PHONE_NUM_ASYNC_STORAGE_KEY } from '@utils/aptos/core/constants';
-import { registerAccountAddress } from 'api/auth';
+import {FaucetClient} from 'aptos';
+import {createNewAccount} from '@utils/aptos/account';
+import {
+  FAUCET_URL,
+  NODE_URL,
+  USER_PHONE_NUM_ASYNC_STORAGE_KEY,
+} from '@utils/aptos/core/constants';
+import {registerAccountAddress} from 'api/auth';
+import {onboardingUserState} from 'store/onboardingUserState';
+import {useRecoilState} from 'recoil';
 
 export const Onboarding_5 = ({navigation}: {navigation: any}) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
   const [displayLottie, setDisplayLottie] = useState(true);
-
+  const [userState, setUserState] = useRecoilState(onboardingUserState);
   // const [isAccountBeingCreated, setIsAccountBeingCreated] = useState<boolean>(false);
-  const { aptosAccount, updateWalletState } = useWalletState();
-  const privateKeyObject = aptosAccount?.toPrivateKeyObject();
-  const privateKeyHex = privateKeyObject?.privateKeyHex;
-  const publicKeyHex = privateKeyObject?.publicKeyHex;
-  const address = privateKeyObject?.address;
+  const {aptosAccount, updateWalletState} = useWalletState();
+  // const privateKeyObject = aptosAccount?.toPrivateKeyObject();
+  // const privateKeyHex = privateKeyObject?.privateKeyHex;
+  // const publicKeyHex = privateKeyObject?.publicKeyHex;
+  // const address = privateKeyObject?.address;
 
   const createAccountOnClick = async () => {
     // setIsAccountBeingCreated(true);
@@ -28,15 +34,15 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
     const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
     const account = createNewAccount();
     await faucetClient.fundAccount(account.address(), 0);
-    await updateWalletState({ aptosAccountState: account });
-    const phoneNum = await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY)
-    console.log(phoneNum)
-    console.log(address)
+    await updateWalletState({aptosAccountState: account});
+    // console.log(account);
     // await registerAccountAddress(phoneNum, address)
     // setIsAccountBeingCreated(false);
   };
 
-
+  const getUserPhoneNum = async () => {
+    return await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY);
+  };
 
   useEffect(() => {
     if (displayLottie && !nextButtonVisible) {
@@ -71,12 +77,14 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
         ]}>
         로그인 완료!🎉
       </Text>
-      <Text style={[_globalStyles.bigText]}>김블록님,{'\n'}환영합니다!</Text>
+      <Text style={[_globalStyles.bigText]}>
+        {userState.nickname}님,{'\n'}환영합니다!
+      </Text>
 
       <OneButtonFooter
         containerStyle={{
           marginTop: 40 * height,
-          opacity: nextButtonVisible ? 1 : 0.3,
+          opacity: nextButtonVisible ? 1 : 0,
         }}
         buttonWidth={260 * width}
         onPress={async () => {

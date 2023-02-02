@@ -22,8 +22,12 @@ import Icon_Search from '@assets/icons/icon_search.svg';
 import UserDefaultProfileImage from '@assets/images/user_default_profile_image.svg';
 import {_globalStyles} from '@screens/styles';
 // import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
-import {UserProfileHeader} from '@components/headers/UserProfileHeader';
-
+import {
+  getAccountResources,
+  UserProfileHeader,
+} from '@components/headers/UserProfileHeader';
+import {reset} from 'numeral';
+import {getAptosAccountState} from '@utils/aptos/account';
 
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
@@ -112,6 +116,13 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
     SimplifiedContact[]
   >([]);
 
+  const getBalance = async () => {
+    const account = await getAptosAccountState();
+    console.log(account?.address().hex());
+  };
+
+  getBalance();
+
   // useEffect(() => {
   //   if (contactLists.length === 0) {
   //     iosEnableNotesUsage(false);
@@ -155,7 +166,6 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
       setFilteredContactLists(contactLists);
     }
   }, [searchString]);
-
 
   const searchComponent = useMemo(() => {
     return (
