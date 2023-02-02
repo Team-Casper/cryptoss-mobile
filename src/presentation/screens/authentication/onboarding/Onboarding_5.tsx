@@ -21,27 +21,19 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
   const [nextButtonVisible, setNextButtonVisible] = useState(false);
   const [displayLottie, setDisplayLottie] = useState(true);
   const [userState, setUserState] = useRecoilState(onboardingUserState);
-  // const [isAccountBeingCreated, setIsAccountBeingCreated] = useState<boolean>(false);
   const {aptosAccount, updateWalletState} = useWalletState();
-  // const privateKeyObject = aptosAccount?.toPrivateKeyObject();
-  // const privateKeyHex = privateKeyObject?.privateKeyHex;
-  // const publicKeyHex = privateKeyObject?.publicKeyHex;
-  // const address = privateKeyObject?.address;
 
   const createAccountOnClick = async () => {
-    // setIsAccountBeingCreated(true);
     // const client = new AptosClient(NODE_URL);
     const faucetClient = new FaucetClient(NODE_URL, FAUCET_URL);
     const account = createNewAccount();
     await faucetClient.fundAccount(account.address(), 0);
     await updateWalletState({aptosAccountState: account});
-    // console.log(account);
-    // await registerAccountAddress(phoneNum, address)
-    // setIsAccountBeingCreated(false);
-  };
-
-  const getUserPhoneNum = async () => {
-    return await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY);
+    const privateKeyObject = account?.toPrivateKeyObject();
+    const privateKeyHex = privateKeyObject?.privateKeyHex;
+    const publicKeyHex = privateKeyObject?.publicKeyHex;
+    const address = privateKeyObject?.address;
+    await registerAccountAddress(userState[0].phoneNumber, address);
   };
 
   useEffect(() => {
@@ -78,7 +70,7 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
         로그인 완료!🎉
       </Text>
       <Text style={[_globalStyles.bigText]}>
-        {userState.nickname}님,{'\n'}환영합니다!
+        {userState[0]?.nickname}님,{'\n'}환영합니다!
       </Text>
 
       <OneButtonFooter

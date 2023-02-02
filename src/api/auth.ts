@@ -1,4 +1,4 @@
-import { SERVER_ENDPOINT } from '@utils/aptos/core/constants';
+import {SERVER_ENDPOINT} from '@utils/aptos/core/constants';
 import axios from 'axios';
 import {Alert} from 'react-native';
 
@@ -48,7 +48,7 @@ const authenticatePhone = async (
  */
 const registerAccountAddress = async (
   _phone_number: string,
-  _address: string | undefined
+  _address: string | undefined,
 ) => {
   try {
     const res = await axios.post(`${SERVER_ENDPOINT}/account/address`, {
@@ -65,16 +65,13 @@ const registerAccountAddress = async (
 /**
  * Get account by phone number.
  */
-const getAccountByPhoneNumber = async ({
-  _phone_number,
-}: {
-  _phone_number: string;
-}) => {
+const getAccountByPhoneNumber = async (_phone_number: string) => {
   try {
-    const res = await axios.get(
-      `${SERVER_ENDPOINT}/account/${_phone_number}`,
-    );
-  } catch (error) {}
+    const res = await axios.get(`${SERVER_ENDPOINT}/account/${_phone_number}`);
+    return res.data;
+  } catch (error) {
+    Alert.alert('다시 시도해주세요.');
+  }
 };
 
 /**

@@ -261,7 +261,9 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
               mobileCarrier,
             );
             await storeData('nickname', nickName);
-            setUserState({nickname: nickName});
+            setUserState(prevState =>
+              prevState.map(state => ({...state, nickname: nickName})),
+            );
             navigation.navigate('Onboarding_3', {phoneNumber: phoneNumber});
           }}
           buttonText={'확인'}

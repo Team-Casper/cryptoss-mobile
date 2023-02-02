@@ -28,6 +28,11 @@ import {
 } from '@components/headers/UserProfileHeader';
 import {reset} from 'numeral';
 import {getAptosAccountState} from '@utils/aptos/account';
+import {useRecoilState} from 'recoil';
+import {onboardingUserState} from 'store/onboardingUserState';
+import {getAccountByPhoneNumber} from 'api/auth';
+import {getData} from '@utils/AsyncStorage';
+import {USER_PHONE_NUM_ASYNC_STORAGE_KEY} from '@utils/aptos/core/constants';
 
 const getSampleProfilePicture = (idx: number) => {
   const newIdx = idx % 5;
@@ -115,13 +120,21 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
   const [filteredContactLists, setFilteredContactLists] = useState<
     SimplifiedContact[]
   >([]);
+  const [userState, setUserState] = useRecoilState(onboardingUserState);
 
   const getBalance = async () => {
     const account = await getAptosAccountState();
-    console.log(account?.address().hex());
   };
 
-  getBalance();
+  const getAddressFromPhoneNumber = async () => {
+    const phoneNumber = await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY);
+    const address = await getAccountByPhoneNumber(phoneNumber);
+    console.log(address);
+  };
+  useEffect(() => {
+    getBalance();
+    getAddressFromPhoneNumber();
+  }, []);
 
   // useEffect(() => {
   //   if (contactLists.length === 0) {
