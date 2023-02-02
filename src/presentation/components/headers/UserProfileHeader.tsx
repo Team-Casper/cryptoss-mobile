@@ -109,7 +109,7 @@ export const UserProfileHeader = ({
                     }}
                     style={_styles.nftImageElementContainer}>
                     <FastImage
-                      resizeMode="cover" //"stretch"
+                      resizeMode="cover"
                       style={[
                         {
                           width: 58 * height,

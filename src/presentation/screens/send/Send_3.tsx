@@ -80,7 +80,7 @@ export const Send_3 = ({navigation, route}: {navigation: any; route: any}) => {
             top: 60 * height,
           }}
           autoPlay={true}
-          loop={displayLottie_1}
+          loop={true}
         />
       ) : (
         <LottieView
