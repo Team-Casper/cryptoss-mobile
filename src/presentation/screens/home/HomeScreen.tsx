@@ -33,21 +33,48 @@ import {onboardingUserState} from 'store/onboardingUserState';
 import {getAccountByPhoneNumber} from 'api/auth';
 import {getData} from '@utils/AsyncStorage';
 import {USER_PHONE_NUM_ASYNC_STORAGE_KEY} from '@utils/aptos/core/constants';
+import Contacts, {iosEnableNotesUsage} from 'react-native-contacts';
+import {
+  SampleNft1,
+  SampleNft2,
+  SampleNft3,
+  SampleNft4,
+  SampleNft5,
+  SampleNft6,
+  SampleNft7,
+  SampleNft8,
+  SampleNft9,
+  SampleNft10,
+  SampleNft11,
+  SampleNft12,
+  SampleNft13,
+  SampleNft14,
+} from '@assets/images';
 
+const SampleProfilePictureImgSrcList = [
+  SampleNft1,
+  SampleNft2,
+  SampleNft3,
+  SampleNft4,
+  SampleNft5,
+  SampleNft6,
+  SampleNft7,
+  SampleNft8,
+  SampleNft9,
+  SampleNft10,
+  SampleNft11,
+  SampleNft12,
+  SampleNft13,
+  SampleNft14,
+];
 const getSampleProfilePicture = (idx: number) => {
-  const newIdx = idx % 5;
-  switch (newIdx) {
-    case 0:
-      return <SamplePf_2 width={63 * height} height={63 * height} />;
-    case 1:
-      return <SamplePf_3 width={63 * height} height={63 * height} />;
-    case 2:
-      return <SamplePf_4 width={63 * height} height={63 * height} />;
-    case 3:
-      return <SamplePf_5 width={63 * height} height={63 * height} />;
-    case 4:
-      return <SamplePf_6 width={63 * height} height={63 * height} />;
-  }
+  const newIdx = idx % 14;
+  return (
+    <Image
+      source={SampleProfilePictureImgSrcList[newIdx]}
+      style={{width: 63 * height, height: 63 * height}}
+    />
+  );
 };
 
 interface SimplifiedContact {
@@ -269,7 +296,6 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
   return (
     <View style={_styles.outerContainerStyle}>
       <UserProfileHeader hideHoldingAPTAmountDisplay={false} />
-      {/*headerComponent(false)*/}
       {searchComponent}
       <ScrollView style={{width: 375 * width}}>
         <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
@@ -328,7 +354,7 @@ const _styles = StyleSheet.create({
     backgroundColor: 'white',
     borderRadius: 16 * height,
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
     paddingHorizontal: 19 * width,
   },

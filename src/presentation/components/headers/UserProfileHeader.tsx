@@ -54,12 +54,14 @@ const getAccountBalanceFromAccountResources = (
   }
   return -1;
 };
+import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
 
 export const UserProfileHeader = ({
   hideHoldingAPTAmountDisplay,
 }: {
   hideHoldingAPTAmountDisplay: boolean;
 }) => {
+  const [showArrow, setShowArrow] = useState(true);
   const [showProfileInfoEditModal, setShowProfileInfoEditModal] =
     useState(false);
   const [
@@ -159,8 +161,12 @@ export const UserProfileHeader = ({
           </View>
           <Image
             source={{uri: currentProfilePictureImageUrl}}
-            style={{height: 165 * height, width: '60%'}}
-            resizeMode="contain"
+            style={{
+              height: 165 * height,
+              width: 165 * height,
+              borderRadius: 18 * height,
+            }}
+            resizeMode="stretch"
           />
           <View style={_styles.myNftListOuterContainer}>
             <Text
@@ -170,11 +176,31 @@ export const UserProfileHeader = ({
               ]}>
               내 NFT 목록
             </Text>
+            {showArrow && (
+              <View
+                style={{
+                  position: 'absolute',
+                  right: -15 * height,
+                  top: 50 * height,
+                  zIndex: 4,
+                }}>
+                <IconArrowRight
+                  width={27 * height}
+                  height={27 * height}
+                  fill={colors.gray_1}
+                />
+              </View>
+            )}
             <ScrollView
               horizontal
+              onTouchStart={() => {
+                setShowArrow(false);
+              }}
+              onTouchEnd={() => {
+                setShowArrow(true);
+              }}
               style={{
                 height: 58 * height,
-                overflow: 'visible',
               }}>
               {holdingNftList.map((nftInfo: NftInfo, idx) => {
                 return (
@@ -189,7 +215,11 @@ export const UserProfileHeader = ({
                     <Image
                       resizeMode="stretch"
                       style={[
-                        {width: 58 * height, height: '100%'},
+                        {
+                          width: 58 * height,
+                          height: '100%',
+                          borderRadius: 8 * height,
+                        },
                         chosenNftIdx === idx && {
                           borderWidth: 3 * height,
                           borderColor: colors.gray_1,
@@ -231,7 +261,7 @@ export const UserProfileHeader = ({
         </View>
       </View>
     );
-  }, [currentProfilePictureImageUrl, chosenNftIdx, holdingNftList]);
+  }, [currentProfilePictureImageUrl, chosenNftIdx, holdingNftList, showArrow]);
 
   return (
     <React.Fragment>
@@ -320,7 +350,7 @@ const _styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
     height: 100 * height,
-    paddingLeft: 30 * width,
+    width: (321 - 60) * width,
     marginTop: 7 * height,
   },
   nameSectionContainer: {
@@ -406,12 +436,13 @@ const _styles = StyleSheet.create({
     backgroundColor: colors.chosenOptionBackgroundColor,
   },
   holdingAPTAmountDisplayContainer: {
-    width: 140 * width,
     height: 65 * height,
+    position: 'absolute',
+    right: 10 * width,
     backgroundColor: 'white',
     borderRadius: 16 * height,
     flexDirection: 'column',
-    alignItems: 'flex-start',
+    alignItems: 'flex-end',
     justifyContent: 'center',
     paddingHorizontal: 19 * width,
   },

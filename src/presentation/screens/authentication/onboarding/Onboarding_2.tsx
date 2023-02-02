@@ -21,6 +21,8 @@ import {useRecoilState} from 'recoil';
 // import {useRecoilState} from 'recoil';
 // import {phoneVerificationState} from 'store/phoneVerificationState';
 
+const isNum = (val: string) => /^\d+$/.test(val);
+
 export const Onboarding_2 = ({navigation}: {navigation: any}) => {
   const [nickName, setNickName] = useState('');
   const [mobileCarrier, setMobileCarrier] = useState('');
@@ -371,12 +373,12 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             onFocus={() => setFocusedInputIdx(2)}
             onBlur={() => setFocusedInputIdx(-1)}
             onChangeText={(text: string) => {
-              setPhoneNumber(text);
+              if (isNum(text)) setPhoneNumber(text);
               if (text.length >= 11) Keyboard.dismiss();
             }}
             value={phoneNumber}
             placeholder={'휴대폰번호'}
-            keyboardType={'phone-pad'}
+            keyboardType={'numeric'}
             maxLength={11}
           />
         </View>
