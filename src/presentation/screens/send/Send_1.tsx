@@ -11,6 +11,7 @@ import React, {useState} from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
+  Modal,
   StyleSheet,
   Text,
   TextInput,
@@ -18,6 +19,7 @@ import {
   View,
 } from 'react-native';
 import Icon_ArrowLeft from '@assets/icons/icon_arrow_left.svg';
+import Icon_Safe from '@assets/icons/icon_safe.svg';
 import {HideKeyboard} from '@screens/common';
 import LinearGradient from 'react-native-linear-gradient';
 import {OneButtonFooter} from '@components/buttons/OneButtonFooter';
@@ -26,6 +28,7 @@ export const Send_1 = ({navigation, route}: {navigation: any; route: any}) => {
   const {personName, personPhoneNumber} = route.params;
   const [phase, setPhase] = useState(0);
   const [amountToSend, setAmountToSend] = useState<string>(''); // parseFloat(text)
+  const [showModal, setShowModal] = useState(false);
 
   const goBack = () => {
     switch (phase) {
@@ -36,6 +39,67 @@ export const Send_1 = ({navigation, route}: {navigation: any; route: any}) => {
         setPhase(0);
       }
     }
+  };
+
+  const ConfirmModal = () => {
+    return (
+      <View style={_styles.modalDimBackground}>
+        <View style={_styles.modalContentContainer}>
+          <Icon_Safe
+            width={61 * height}
+            height={75 * height}
+            style={{marginTop: 8 * height}}
+          />
+          <Text
+            style={[
+              {
+                fontWeight: '500',
+                fontSize: 18 * height,
+                lineHeight: 24 * height,
+                textAlign: 'center',
+                color: colors.gray_1,
+              },
+              {marginTop: 14 * height, marginBottom: 4 * height},
+            ]}>
+            {formatPhoneNumber(personPhoneNumber)} 님에 대한
+          </Text>
+          <Text
+            style={{
+              fontWeight: '700',
+              fontSize: 28 * height,
+              textAlign: 'center',
+              color: colors.gray_1,
+              marginBottom: 5 * height,
+              marginTop: 3 * height,
+            }}>
+            신고내역 0건
+          </Text>
+          <Text
+            style={{
+              fontWeight: '400',
+              fontSize: 14 * height,
+              lineHeight: 24 * height,
+              textAlign: 'center',
+              color: colors.gray_3,
+            }}>
+            참고용이며 거래의 안전을 보장하지 않아요.
+          </Text>
+          <OneButtonFooter
+            onPress={() => {
+              setShowModal(false);
+              navigation.navigate('Send_2', {
+                personName: personName,
+                personPhoneNumber: personPhoneNumber,
+                amountToSend: amountToSend,
+              });
+            }}
+            buttonText={'확인'}
+            buttonWidth={288 * width}
+            containerStyle={{bottom: 25 * height, position: 'absolute'}}
+          />
+        </View>
+      </View>
+    );
   };
 
   return (
@@ -138,21 +202,38 @@ export const Send_1 = ({navigation, route}: {navigation: any; route: any}) => {
               bottom: 35 * height,
             }}
             onPress={() => {
-              navigation.navigate('Send_2', {
-                personName: personName,
-                personPhoneNumber: personPhoneNumber,
-                amountToSend: amountToSend,
-              });
+              setShowModal(true);
             }}
             buttonText={'확인'}
           />
         )}
+        <Modal transparent={true} visible={showModal}>
+          {ConfirmModal()}
+        </Modal>
       </View>
     </HideKeyboard>
   );
 };
 
 const _styles = StyleSheet.create({
+  modalDimBackground: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    justifyContent: 'flex-end',
+    //paddingBottom: 20 * height,
+    alignItems: 'center',
+  },
+  modalContentContainer: {
+    width: 375 * width,
+    height: 330 * height,
+    backgroundColor: 'white',
+    borderRadius: 16 * height,
+    paddingTop: 20 * height,
+    paddingBottom: 30 * height,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    flexDirection: 'column',
+  },
   localContainerStyle: {
     justifyContent: 'flex-start',
     alignItems: 'flex-start',
