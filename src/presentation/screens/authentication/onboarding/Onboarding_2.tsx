@@ -14,6 +14,7 @@ import {BottomSheet, HideKeyboard} from '@screens/common';
 import Icon_Close from '@assets/icons/icon_close.svg';
 import Icon_Check from '@assets/icons/icon_check.svg';
 import Icon_View_More from '@assets/icons/icon_view_more.svg';
+import TextInputMask from 'react-native-text-input-mask';
 
 const isNum = (val: string) => /^\d+$/.test(val);
 
@@ -341,7 +342,7 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             ]}>
             휴대폰번호
           </Text>
-          <TextInput
+          <TextInputMask
             style={[
               _globalStyles.textInputStyle,
               {
@@ -353,11 +354,14 @@ export const Onboarding_2 = ({navigation}: {navigation: any}) => {
             ]}
             onFocus={() => setFocusedInputIdx(2)}
             onBlur={() => setFocusedInputIdx(-1)}
-            onChangeText={(text: string) => {
-              if (isNum(text)) setPhoneNumber(text);
-              if (text.length >= 11) Keyboard.dismiss();
-            }}
             value={phoneNumber}
+            onChangeText={(formatted, extracted) => {
+              console.log(formatted);
+              console.log(extracted);
+              if (extracted) setPhoneNumber(extracted);
+              if ((extracted || '').length >= 11) Keyboard.dismiss();
+            }}
+            mask={'[000] [0000] [0000]'}
             placeholder={'휴대폰번호'}
             keyboardType={'numeric'}
             maxLength={11}
