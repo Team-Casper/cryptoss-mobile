@@ -1,7 +1,7 @@
 import {_globalStyles} from '@screens/styles';
 import {addComma} from '@utils/index';
 import {colors, height, width} from '@utils/globalConfig';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -13,12 +13,44 @@ import {
 
 import {headerComponent} from './HomeScreen';
 import IconArrowRight from '@assets/icons/icon_arrow_right.svg';
-import {UserProfileHeader} from '@components/headers/UserProfileHeader';
+import {
+  getAccountResources,
+  UserProfileHeader,
+} from '@components/headers/UserProfileHeader';
 
 import {CoinInfo, NftInfo} from '@utils/index';
-import { LinearGradient } from 'expo-linear-gradient';
+import {LinearGradient} from 'expo-linear-gradient';
+import {getAptosAccountState} from '@utils/aptos/account';
+import {NODE_URL} from '@utils/aptos/core/constants';
+import numeral from 'numeral';
 
 export const MyAssetScreen = ({navigation}: {navigation: any}) => {
+  const [tokenBalanceString, setTokenBalanceString] = useState('');
+
+  useEffect(() => {
+    getBalance();
+  }, []);
+
+  const getBalance = async () => {
+    const account = await getAptosAccountState();
+    const accountResources = await getAccountResources({
+      address: account?.address().hex(),
+      nodeUrl: NODE_URL,
+    });
+
+    const accountResource = accountResources
+      ? accountResources?.find(
+          r => r.type === '0x1::coin::CoinStore<0x1::aptos_coin::AptosCoin>',
+        )
+      : undefined;
+    const tokenBalance = accountResource
+      ? (accountResource.data as {coin: {value: string}}).coin.value
+      : undefined;
+    setTokenBalanceString(
+      await numeral(tokenBalance).divide(100000000).format('0,0.0000'),
+    );
+  };
+
   const [holdingCoinList, setHoldingCoinList] = useState<CoinInfo[]>([
     {coinName: 'BTC', coinAmount: 100000},
     {coinName: 'ETH', coinAmount: 301111},
@@ -73,10 +105,10 @@ export const MyAssetScreen = ({navigation}: {navigation: any}) => {
         </Text>
         <View style={_styles.holdingAmountInnerContainerStyle}>
           <Text style={[_styles.subText, {fontSize: 32 * height}]}>
-            {addComma(10000)} APT
+            {tokenBalanceString} APT
           </Text>
           <Text style={[_styles.subText, {lineHeight: 20 * height}]}>
-            ({addComma(10000 * 20000)}원)
+            ({addComma(Number(tokenBalanceString) * 21367)}원)
           </Text>
         </View>
       </LinearGradient>
