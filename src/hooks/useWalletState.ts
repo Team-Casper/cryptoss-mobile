@@ -34,7 +34,7 @@ export default function useWalletState() {
         const privateKeyObject = aptosAccountState?.toPrivateKeyObject();
         setAptosAccount(aptosAccountState);
         setAsyncStorageState({aptosAccountObject: privateKeyObject});
-        await storeData('aptosAccountState', aptosAccountState);
+
         await storeData(
           WALLET_STATE_ASYNC_STORAGE_KEY,
           JSON.stringify(privateKeyObject),

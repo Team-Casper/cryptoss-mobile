@@ -29,6 +29,8 @@ export const Onboarding_5 = ({navigation}: {navigation: any}) => {
     const account = createNewAccount();
     await faucetClient.fundAccount(account.address(), 0);
     await updateWalletState({aptosAccountState: account});
+    console.log(account);
+    await storeData('aptosAccountState', account);
     const privateKeyObject = account?.toPrivateKeyObject();
     const privateKeyHex = privateKeyObject?.privateKeyHex;
     const publicKeyHex = privateKeyObject?.publicKeyHex;

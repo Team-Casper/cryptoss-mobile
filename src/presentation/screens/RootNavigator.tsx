@@ -12,11 +12,11 @@ const Stack = createNativeStackNavigator();
 
 // TO-DO : user state 에 따라 해당 user가 이미 한번 onboarding을 진행한 상태면 다시 앱에 진입했을때 곧바로 main 화면으로 보내주기
 export const RootNavigator = () => {
-  const [isOnboarding, setIsOnboarding] = useState(false);
+  const [isOnboarding, setIsOnboarding] = useState();
 
   const getIsOnboarding = async () => {
-    // const _isOnboarding = await getData('onboarding');
-    // setIsOnboarding(JSON.parse(_isOnboarding));
+    const _isOnboarding = await getData('onboarding');
+    setIsOnboarding(JSON.parse(_isOnboarding));
   };
 
   useEffect(() => {

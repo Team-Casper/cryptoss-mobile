@@ -96,7 +96,6 @@ export const headerComponent = (hideHoldingAPTAmountDisplay?: boolean) => {
       <Modal transparent={true} visible={showProfileInfoEditModal}>
         <Text>hi</Text>
       </Modal>
-      )
       <View style={_styles.headerContainer}>
         <View style={_styles.profilePictureContainer}>
           <SamplePf_1 width={63 * height} height={63 * height} />
@@ -155,15 +154,61 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
   const [userState, setUserState] = useRecoilState(onboardingUserState);
   const [accountState, setAccountState] = useState<any>();
 
+  function Utf8ArrayToStr(array: any) {
+    var out, i, len, c;
+    var char2, char3;
+
+    out = '';
+    len = array.length;
+    i = 0;
+    while (i < len) {
+      c = array[i++];
+      switch (c >> 4) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+          // 0xxxxxxx
+          out += String.fromCharCode(c);
+          break;
+        case 12:
+        case 13:
+          // 110x xxxx   10xx xxxx
+          char2 = array[i++];
+          out += String.fromCharCode(((c & 0x1f) << 6) | (char2 & 0x3f));
+          break;
+        case 14:
+          // 1110 xxxx  10xx xxxx  10xx xxxx
+          char2 = array[i++];
+          char3 = array[i++];
+          out += String.fromCharCode(
+            ((c & 0x0f) << 12) | ((char2 & 0x3f) << 6) | ((char3 & 0x3f) << 0),
+          );
+          break;
+      }
+    }
+
+    return out;
+  }
+
   const getAptosAccountState = async () => {
     const aptosAccountState = await getData('aptosAccountState');
+    // console.log(encode(aptosAccountState));
+    // console.log(decode(aptosAccountState));
     console.log(aptosAccountState);
-    setAccountState(aptosAccountState);
+    console.log(Utf8ArrayToStr(aptosAccountState));
+
+    // setAccountState(aptosAccountState);
   };
 
   const getAddressFromPhoneNumber = async () => {
     const phoneNumber = await getData(USER_PHONE_NUM_ASYNC_STORAGE_KEY);
     const address = await getAccountByPhoneNumber(phoneNumber);
+
     return address?.address;
   };
 
@@ -175,18 +220,39 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
     return coinCli.transfer(from, to, amount);
   };
 
+  const submitTransaction = async (toAddress: any, amount: any) => {
+    // const from = new AptosAccount(accountState);
+    // console.log(from);
+    console.log(accountState);
+    // const client = new AptosClient(NODE_URL);
+    // const payload: any = {
+    //   arguments: [toAddress, `${amount}`],
+    //   function: '0x1::Coin::transfer',
+    //   type: 'script_function_payload',
+    //   type_arguments: ['0x1::TestCoin::TestCoin'],
+    // };
+    // const txnRequest = await client.generateTransaction(
+    //   accountState.address(),
+    //   payload,
+    // );
+    // const signedTxn = await client.signTransaction(accountState, txnRequest);
+    // const transactionRes = await client.submitTransaction(signedTxn);
+    // await client.waitForTransaction(transactionRes.hash);
+  };
+
   useEffect(() => {
     getAptosAccountState();
     getAddressFromPhoneNumber();
-    const to =
-      '0x6626a976ef381b279d50ff46156e3612eb7a885f48310f0899642b2f7166bb48';
-    // transferAPT(
-    //   to,
-    //   1,
-    // );
 
+    // transferAPT(to, 1);
     console.log('done!');
   }, []);
+
+  const sendCoin = () => {
+    const to =
+      '0x6626a976ef381b279d50ff46156e3612eb7a885f48310f0899642b2f7166bb48';
+    submitTransaction(to, '1');
+  };
 
   // useEffect(() => {
   //   if (contactLists.length === 0) {
@@ -322,6 +388,7 @@ export const HomeScreen = ({navigation}: {navigation: any}) => {
     <View style={_styles.outerContainerStyle}>
       <UserProfileHeader hideHoldingAPTAmountDisplay={false} />
       {searchComponent}
+      <Text onPress={sendCoin}>전송</Text>
       <ScrollView style={{width: 375 * width}}>
         <Text style={[_globalStyles.subTitleText, {marginBottom: 5 * height}]}>
           연락처
